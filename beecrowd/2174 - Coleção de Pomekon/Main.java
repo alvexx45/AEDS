@@ -4,7 +4,7 @@ import java.util.HashSet;
 class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        HashSet<String> pk = new HashSet<>();
+        HashSet<String> pomedex = new HashSet<>();
 
         int qtd = 151;
 
@@ -13,10 +13,10 @@ class Main {
 
         for (int i = 0; i < n; i++) {
             String pmk = sc.nextLine();
-            pk.add(pmk);
+            pomedex.add(pmk);
         }
 
-        int res = qtd - pk.size();
+        int res = qtd - pomedex.size();
 
         System.out.println("Falta(m) " + res + " pomekon(s).");
 
