@@ -3,6 +3,10 @@
 #include <string.h>
 #include <stdbool.h>
 
+int compare(const void *a, const void *b) {
+    return strcmp(*(const char **)a, *(const char **)b);
+}
+
 int main() {
 
     char *pomedex[151] = {NULL};
@@ -13,32 +17,26 @@ int main() {
 
 
     for (int i = 0; i < n; i++) {
-        bool added = false;
         char pmk[30];
         scanf("%s", pmk);
 
-        for (int j = 0; j < count; j++) {
-            if (strcmp(pomedex[j], pmk) == 0) {
-                added = true;
-                j = count;
-            }
-        }
+        char *key = pmk;
+        if (bsearch(&key, pomedex, count, sizeof(char *), compare) == NULL) {
+            if (count < 151) {
+                pomedex[count] = malloc(strlen(pmk) + 1);
+                strcpy(pomedex[count], pmk);
+                count++;
 
-        if (!added && count < 151) {
-            pomedex[count] = malloc(strlen(pmk) + 1);
-            
-            if (pomedex[count] == NULL) {
-                return 1;
+                qsort(pomedex, count, sizeof(char *), compare);
             }
-
-            strcpy(pomedex[i], pmk);
-            count++;
         }
     }
 
-    int resto = 151 - count;
-    printf("Falta(m) %d pomekon(s).\n", resto);
+    printf("Falta(m) %d pomekon(s).\n", 151 - count);
 
+    for (int i = 0; i < count; i++) {
+        free(pomedex[i]);
+    }
 
     return 0;
 }
