@@ -2,8 +2,10 @@ import java.util.Scanner;
 
 class Main {
     public static String idioma(String lang) {
-        String res = "";
+        String res = lang;
         
+        
+
         return res;
     }
     public static void main(String[] args) {
