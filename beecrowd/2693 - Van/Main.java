@@ -8,7 +8,6 @@ class Main {
         Scanner sc = new Scanner(System.in);
 
         int n = sc.nextInt();
-        sc.nextLine();
         List<Van> van = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
@@ -16,7 +15,6 @@ class Main {
             char dir = sc.next().charAt(0);
             int dist = sc.nextInt();
             van.add(new Van(nome, dir, dist));
-            sc.nextLine();
         }
 
         Collections.sort(van, (v1, v2) -> {
