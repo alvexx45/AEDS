@@ -8,6 +8,16 @@ typedef struct {
     int dist;
 } Van;
 
+int compare(const void *a, const void *b) {
+    Van *v1 = (Van *)a;
+    Van *v2 = (Van *)b;
+
+    if (v1->dist != v2->dist)
+        return v1->dist - v2->dist;
+        
+    return strcmp(v1->nome, v2->nome);
+}
+
 int main() {
     int n;
     scanf("%d", &n);
@@ -15,9 +25,13 @@ int main() {
     Van v[n];
 
     for (int i = 0; i < n; i++) {
-        scanf("%s %c %d", v[i].nome, v[i].dir, &v[i].dist);
+        scanf("%s %c %d", v[i].nome, &v[i].dir, &v[i].dist);
     }
-    qsort()
+    qsort(v, n, sizeof(Van), compare);
+
+    for (int i = 0; i < n; i++) {
+        printf("%s\n", v[i].nome);
+    }
 
     return 0;
 }
