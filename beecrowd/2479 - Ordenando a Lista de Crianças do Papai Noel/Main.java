@@ -5,7 +5,7 @@ class Main {
         for (int i = 0; i < n - 1; i++) {
             int menor = i;
             for (int j = i + 1; j < n; j++) {
-                if (!nomes[j].equals(nomes[menor])) {
+                if (nomes[j].compareTo(nomes[menor]) < 0) {
                     menor = j;
                 }
             }
@@ -22,20 +22,23 @@ class Main {
         Scanner sc = new Scanner(System.in);
 
         int n = sc.nextInt();
-        char comp;
+        sc.nextLine();
+
         String nomes[] = new String[n];
         int b = 0, m = 0;
 
         for (int i = 0; i < n; i++) {
-            comp = sc.next().charAt(0);
-            nomes[i] = sc.nextLine();
+            String linha = sc.nextLine().trim();
+            char comp = linha.charAt(0);
+            nomes[i] = linha.substring(2).trim();
+
             if (comp == '+') b++;
             if (comp == '-') m++;
         }
         selection(n, nomes);
 
-        for (int i = 0; i < n; i++) {
-            System.out.println(nomes[i]);
+        for (String nome : nomes) {
+            System.out.println(nome);
         }
         System.out.printf("Se comportaram: %d | Nao se comportaram: %d", b, m);
 
