@@ -71,7 +71,6 @@ class Confeccao implements Comparable<Confeccao>{
 
     @Override
     public int compareTo(Confeccao outra) {
-        // Primeiro compara as cores
         int cmp = this.cor.compareTo(outra.cor);
         if (cmp != 0) {
             return cmp;
