@@ -1,31 +1,19 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 class Main {
     public static boolean anagrama(String p1, String p2) {
-        boolean res = true;
+        boolean res = false;
 
-        p1 = p1.toLowerCase();
-        p2 = p2.toLowerCase();
+        if (!(p1.length() != p2.length())) {
+            char[] arr1 = p1.toCharArray();
+            char[] arr2 = p2.toCharArray();
 
-        int cont[] = new int[65536];
+            Arrays.sort(arr1);
+            Arrays.sort(arr2);
 
-        for (int i = 0; i < p1.length(); i++) {
-            char c = p1.charAt(i);
-            if (c < 256) {
-                cont[c]++;
-            }
-        }
-        
-        for (int i = 0; i < p2.length(); i++) {
-            char c = p2.charAt(i);
-            if (c < 256) {
-                cont[c]--;
-            }
-        }
-
-        for (int i = 0; i < 256; i++) {
-            if (cont[i] != 0) {
-                res = false;
+            if (Arrays.equals(arr1, arr1)) {
+                res = true;
             }
         }
 
@@ -38,8 +26,8 @@ class Main {
 
         while (!linha.equals("FIM")) {
             String[] parts = linha.split(" - ");
-            String p1 = parts[0];
-            String p2 = parts[1];
+            String p1 = parts[0].toLowerCase();
+            String p2 = parts[1].toLowerCase();
     
             if (anagrama(p1, p2)) {
                 System.out.println("SIM");
