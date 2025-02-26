@@ -15,14 +15,14 @@ void inverter(char *str, int inicio, int fim) {
 } 
 
 int main() {
-    char txt[31];
-    scanf("%s", txt);
+    char str[31];
+    scanf("%s", str);
 
-    while(strcmp(txt, "FIM") != 0) {
-        inverter(txt, 0, strlen(txt) - 1);
-        printf("%s\n", txt);
+    while(strcmp(str, "FIM") != 0) {
+        inverter(str, 0, strlen(str) - 1);
+        printf("%s\n", str);
 
-        scanf("%s", txt);
+        scanf("%s", str);
     }
 
     return 0;
