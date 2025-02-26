@@ -17,7 +17,6 @@ int main() {
         int num = atoi(entrada);
         printf("%d\n", soma(num));
 
-        getchar() != '\n';
         scanf("%s", entrada);
     }
 
