@@ -1,28 +1,18 @@
-void quicksort(int array[], int left, int right) {
-    if (left < right) {
-        int pivo = partition(array, left, right);
-        quicksort(array, left, pivo - 1);
-        quicksort(array, pivo + 1, right);
-    }
-}
-
-int partition(int array[], int left, int right) {
-    int pivo = array[right];
-
-    int i = left - 1;
-    for (int j = left; j < right; j++) {
-        if (array[j] <= pivo) {
+void quicksort(int array[], int esq, int dir) {
+    int i = esq, j = dir, pivo = array[(esq+dir)/2];
+    while (i <= j) {
+        while (array[i] < pivo)
             i++;
-            int temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
+        while (array[j] > pivo)
+            j--;
+        if (i <= j) {
+            swap(i, j);
+            i++;
+            j--;
         }
-
     }
-    
-    int temp = array[i + 1];
-    array[i + 1] = array[right];
-    array[right] = temp;
-
-    return i + 1;
+    if (esq < j)
+        quicksort(array, esq, j);
+    if (i < dir)
+        quicksort(array, i, dir);
 }
