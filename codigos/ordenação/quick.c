@@ -1,4 +1,4 @@
-void quicksort(int[] array, int left, int right) {
+void quicksort(int array[], int left, int right) {
     if (left < right) {
         int pivo = partition(array, left, right);
         quicksort(array, left, pivo - 1);
@@ -6,7 +6,7 @@ void quicksort(int[] array, int left, int right) {
     }
 }
 
-int partition(int[] array, int left, int right) {
+int partition(int array[], int left, int right) {
     int pivo = array[right];
 
     int i = left - 1;
