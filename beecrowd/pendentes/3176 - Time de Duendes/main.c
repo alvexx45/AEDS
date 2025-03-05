@@ -27,7 +27,7 @@ int main() {
     qsort(d, n, sizeof(Duende), compare);
 
     for (int i = 0; i < n / 3 ; i++) {
-        if (i + 1 > 1) printf("\n");
+        if (i > 0) printf("\n");
 
         printf("Time %d\n", i + 1);
         printf("%s %d\n", d[i].nome, d[i].idade);
