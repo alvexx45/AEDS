@@ -8,7 +8,7 @@ public class Lista {
     }
 
     void inserirInicio(int x) {
-        if (cont > size) {
+        if (cont >= array.length) {
             System.err.println("Lista cheia");
         }
 
@@ -21,10 +21,26 @@ public class Lista {
     }
 
     void inserirFim(int x) {
+        if (cont >= array.length) {
+            System.err.println("Lista cheia");
+        }
 
+        array[cont] = x;
+        cont++;
     }
 
-    void inserir(int x, int pos) {}
+    void inserir(int x, int pos) {
+        if (cont >= array.length || (pos > 0 || pos < 0)) {
+            System.err.println("Lista cheia ou pos invalida");
+        }
+
+        for (int i = cont; i > pos; i--) {
+            array[i] = array[i - 1];
+        }
+
+        array[pos] = x;
+        cont++;
+    }
 
     int removerInicio() {}
 
@@ -32,5 +48,9 @@ public class Lista {
 
     int remover(int pos) {}
 
-    void mostrar() {}
+    void mostrar() {
+        for (int i = 0; i < array.length; i++) {
+            System.out.println(array[i]);
+        }
+    }
 }
