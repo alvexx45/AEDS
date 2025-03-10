@@ -2,11 +2,11 @@ class Lista {
     public static void main(String[] args) {
         CriarLista lista = new CriarLista(6);
 
-        lista.inserirFim(20);
+        lista.inserirFim(13);
         lista.inserirInicio(10);
         lista.inserir(40, 1);
-        lista.inserirFim(80);
-        lista.inserir(50, 2);
+        lista.inserirFim(28);
+        lista.inserir(12, 2);
 
         lista.mostrar();
 
@@ -19,11 +19,13 @@ class Lista {
         
         lista.mostrar();
 
-        lista.inserirFim(18);
+        lista.inserirFim(10);
 
         lista.mostrar();
 
-        System.out.println(lista.somar());
+        System.out.println("Soma: " + lista.somar());
+        System.out.println("Maior: " + lista.maior());
+        lista.elementos();
     }
 }
 
@@ -124,5 +126,28 @@ class CriarLista {
         }
 
         return res;
+    }
+
+    int maior() {
+        int res = 0;
+
+        for (int i = 0; i < cont; i++) {
+            if (array[i] > res) {
+                res = array[i];
+            }
+        }
+
+        return res;
+    }
+
+    void elementos() {
+        int pares = 0, mcinc = 0;
+
+        for (int i = 0; i < cont; i++) {
+            if (array[i] % 2 == 0) pares++;
+            if (array[i] % 5 == 0) mcinc++;
+        }
+
+        System.out.println("Pares: " + pares + "| Mult. Cinco: " + mcinc);
     }
 }
