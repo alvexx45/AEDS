@@ -1,15 +1,36 @@
-public class Lista {
+class Lista {
+    public static void main(String[] args) {
+        CriarLista lista = new CriarLista(6);
+
+        lista.inserirFim(20);
+        lista.inserirInicio(10);
+        lista.inserir(40, 1);
+        lista.inserirFim(80);
+        lista.inserir(2, 50);
+
+        lista.mostrar();
+
+        lista.removerFim();
+        lista.remover(1);
+        lista.removerInicio();
+
+        lista.mostrar();
+    }
+}
+
+class CriarLista {
     int[] array;
     int cont;
 
-    Lista(int size) {
+    CriarLista(int size) {
         array = new int[size];
         cont = 0;
     }
 
     void inserirInicio(int x) {
         if (cont >= array.length) {
-            System.err.println("Lista cheia");
+            System.err.println();
+            return;
         }
 
         for (int i = cont; i > 0; i--) {
@@ -22,7 +43,8 @@ public class Lista {
 
     void inserirFim(int x) {
         if (cont >= array.length) {
-            System.err.println("Lista cheia");
+            System.err.println();
+            return;
         }
 
         array[cont] = x;
@@ -30,8 +52,9 @@ public class Lista {
     }
 
     void inserir(int x, int pos) {
-        if (cont >= array.length || (pos > 0 || pos < 0)) {
-            System.err.println("Lista cheia ou pos invalida");
+        if (cont >= array.length || (pos < 0 || pos > cont)) {
+            System.err.println();
+            return;
         }
 
         for (int i = cont; i > pos; i--) {
@@ -42,15 +65,45 @@ public class Lista {
         cont++;
     }
 
-    int removerInicio() {}
+    int removerInicio() {
+        if (cont == 0) {
+            System.err.println();
+            return cont;
+        }
 
-    int removerFim() {}
+        for (int i = 0; i < cont - 1; i++) {
+            array[i] = array[i + 1];
+        }
 
-    int remover(int pos) {}
+        return --cont;
+    }
+
+    int removerFim() {
+        if (cont == 0) {
+            System.err.println();
+            return cont;
+        }
+
+        return --cont;
+    }
+
+    int remover(int pos) {
+        if (cont == 0 || (pos > 0 || pos >= cont)) {
+            System.err.println();
+            return cont;
+        }
+
+        for (int i = pos; i < cont - 1; i--) {
+            array[i] = array[i + 1];
+        }
+
+        return --cont;
+    }
 
     void mostrar() {
         for (int i = 0; i < array.length; i++) {
-            System.out.println(array[i]);
+            System.out.print(array[i] + " ");
         }
+        System.out.println();
     }
 }

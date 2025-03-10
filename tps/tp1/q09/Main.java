@@ -63,7 +63,7 @@ class Main {
             if (anagrama(p1, p2)) {
                 System.out.println("SIM");
             } else {
-                System.out.println("NÃO");
+                MyIO.println("NÃO");
             }
             
             linha = sc.nextLine();
