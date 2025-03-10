@@ -7,25 +7,32 @@ class Lista {
         lista.inserir(40, 1);
         lista.inserirFim(28);
         lista.inserir(12, 2);
-
         lista.mostrar();
 
         lista.removerFim();
         lista.remover(1);
-
         lista.mostrar();
         
         lista.removerInicio();
-        
         lista.mostrar();
 
         lista.inserirFim(10);
-
         lista.mostrar();
 
         System.out.println("Soma: " + lista.somar());
         System.out.println("Maior: " + lista.maior());
         lista.elementos();
+
+        lista.removerFim();
+        lista.removerFim();
+        lista.removerFim();
+
+        lista.inserirOrdenado(12);
+        lista.inserirOrdenado(5);
+        lista.inserirOrdenado(18);
+        lista.inserirOrdenado(9);
+        lista.inserirOrdenado(30);
+        lista.mostrar();
     }
 }
 
@@ -73,6 +80,22 @@ class CriarLista {
         }
 
         array[pos] = x;
+        cont++;
+    }
+
+    void inserirOrdenado(int x) {
+        if (cont >= array.length) {
+            System.err.println();
+            return;
+        }
+
+        int pos;
+
+        for (pos = cont - 1; pos >= 0 && array[pos] > x; pos--) {
+            array[pos + 1] = array[pos];
+        }
+        array[pos + 1] = x;
+
         cont++;
     }
 
@@ -148,6 +171,8 @@ class CriarLista {
             if (array[i] % 5 == 0) mcinc++;
         }
 
-        System.out.println("Pares: " + pares + "| Mult. Cinco: " + mcinc);
+        System.out.println("Pares: " + pares + " | Mult. Cinco: " + mcinc);
     }
+
+
 }
