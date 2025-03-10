@@ -60,4 +60,14 @@ class CriarFila {
         }
         System.out.println();
     }
+
+    boolean isVazio() {}
+
+    void mostrarRec() {}
+
+    boolean pesquisar(int elementos) {}
+
+    int retornaPos(int pos) {}
+
+    // implementar sem +1 do construtor
 }
