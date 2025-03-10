@@ -6,13 +6,20 @@ class Lista {
         lista.inserirInicio(10);
         lista.inserir(40, 1);
         lista.inserirFim(80);
-        lista.inserir(2, 50);
+        lista.inserir(50, 2);
 
         lista.mostrar();
 
         lista.removerFim();
         lista.remover(1);
+
+        lista.mostrar();
+        
         lista.removerInicio();
+        
+        lista.mostrar();
+
+        lista.inserirFim(18);
 
         lista.mostrar();
     }
@@ -88,12 +95,12 @@ class CriarLista {
     }
 
     int remover(int pos) {
-        if (cont == 0 || (pos > 0 || pos >= cont)) {
+        if (cont == 0 || (pos < 0 || pos >= cont)) {
             System.err.println();
             return cont;
         }
 
-        for (int i = pos; i < cont - 1; i--) {
+        for (int i = pos; i < cont - 1; i++) {
             array[i] = array[i + 1];
         }
 
@@ -101,7 +108,7 @@ class CriarLista {
     }
 
     void mostrar() {
-        for (int i = 0; i < array.length; i++) {
+        for (int i = 0; i < cont; i++) {
             System.out.print(array[i] + " ");
         }
         System.out.println();
