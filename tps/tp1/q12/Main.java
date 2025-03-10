@@ -42,7 +42,7 @@ class Main {
                 if (validacao(pwd)) {
                     System.out.println("SIM");
                 } else {
-                    System.out.println("NÃO");
+                    System.out.println("NAO");
                 }
             }
 
