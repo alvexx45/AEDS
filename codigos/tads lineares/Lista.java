@@ -22,6 +22,8 @@ class Lista {
         lista.inserirFim(18);
 
         lista.mostrar();
+
+        System.out.println(lista.somar());
     }
 }
 
@@ -112,5 +114,15 @@ class CriarLista {
             System.out.print(array[i] + " ");
         }
         System.out.println();
+    }
+
+    int somar() {
+        int res = 0;
+
+        for (int i = 0; i < cont; i++) {
+            res += array[i];
+        }
+
+        return res;
     }
 }
