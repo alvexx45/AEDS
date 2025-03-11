@@ -20,6 +20,9 @@ class Fila {
 
         fila.remover();
         fila.mostrar();
+
+        System.out.println(fila.pesquisar(90));
+        System.out.println(fila.retornaPos(1));
     }    
 }
 
@@ -32,13 +35,24 @@ class CriarFila {
         primeiro = ultimo = 0;
     }
 
+    // CriarFila(int size) {
+        // array = new int[size];
+        // primeiro = ultimo = 0;
+        // capacidade = size;
+        // tamanho = 0;
+    // }
+
     void inserir(int x) {
         if (((ultimo + 1) % array.length) == primeiro) {
             System.err.println();
             return;
         }
+
+        // if (tamanho == capacidade)
+
         array[ultimo] = x;
         ultimo = (ultimo + 1) % array.length;
+        // tamanho++;
     }
 
     int remover() {
@@ -47,7 +61,10 @@ class CriarFila {
             return ultimo;
         }
 
+        // if (tamanho == 0);
+
         primeiro = (primeiro + 1) % array.length;
+        // tamanho--;
 
         return primeiro;
     }
@@ -61,13 +78,49 @@ class CriarFila {
         System.out.println();
     }
 
-    boolean isVazio() {}
+    boolean isVazio() {
+        boolean vazio = false;
 
-    void mostrarRec() {}
+        if (primeiro == ultimo) vazio = true;
 
-    boolean pesquisar(int elementos) {}
+        return vazio;
+    }
 
-    int retornaPos(int pos) {}
+    boolean pesquisar(int x) {
+        if (primeiro == ultimo) {
+            return false;
+        }
+
+        boolean found = false;
+
+        int i = primeiro;
+        while (i != ultimo) {
+            i = (i + 1) % array.length;
+            if (array[i] == x) {
+                found = true;
+                i = ultimo;
+            }
+        }
+
+        return found;
+    }
+
+    int retornaPos(int pos) {
+        if (primeiro == ultimo) {
+            System.err.println("Fila vazia!");
+            return 0;
+        }
+
+        int tamanho = (ultimo - primeiro + array.length) % array.length;
+        
+        if (pos < 0 || pos >= tamanho) {
+            System.err.println("Posição inválida!");
+            return 0;
+        }
+
+        int indiceReal = (primeiro + pos) % array.length;
+        return array[indiceReal];
+    } 
 
     // implementar sem +1 do construtor
 }
