@@ -19,3 +19,17 @@ bool binsearch(int array[], int n, int x) {
 
     return resp;
 }
+
+int binsearchrec(int array[], int x, int esq, int dir) {
+    if (esq > dir) return -1;
+
+    int meio = (esq + dir) / 2;
+    
+    if (array[meio] == x) {
+        return meio;
+    } else if (array[meio] < x) {
+        binsearchrec(array, x, meio + 1, dir);
+    } else {
+        binsearchrec(array, x, esq, meio - 1);
+    }
+}
