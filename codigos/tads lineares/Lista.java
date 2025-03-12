@@ -104,12 +104,15 @@ class CriarLista {
             System.err.println();
             return cont;
         }
+        
+        int resp = array[0];
+        n--;
 
-        for (int i = 0; i < cont - 1; i++) {
+        for (int i = 0; i < cont; i++) {
             array[i] = array[i + 1];
         }
 
-        return --cont;
+        return resp;
     }
 
     int removerFim() {
@@ -118,7 +121,7 @@ class CriarLista {
             return cont;
         }
 
-        return --cont;
+        return array[--cont];
     }
 
     int remover(int pos) {
@@ -127,11 +130,14 @@ class CriarLista {
             return cont;
         }
 
-        for (int i = pos; i < cont - 1; i++) {
+        int resp = array[pos];
+        cont--;
+
+        for (int i = pos; i < cont; i++) {
             array[i] = array[i + 1];
         }
 
-        return --cont;
+        return resp;
     }
 
     void mostrar() {
@@ -173,6 +179,4 @@ class CriarLista {
 
         System.out.println("Pares: " + pares + " | Mult. Cinco: " + mcinc);
     }
-
-
 }
