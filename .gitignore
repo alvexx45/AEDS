@@ -4,7 +4,8 @@
 *.out
 *.txt
 *.exe
+*.jpeg
+*.png
 fonte
 aulas
 livros
-provas
