@@ -1,5 +1,6 @@
 void quicksort(int array[], int esq, int dir) {
     int i = esq, j = dir, pivo = array[(esq+dir)/2];
+
     while (i <= j) {
         while (array[i] < pivo)
             i++;
@@ -11,6 +12,7 @@ void quicksort(int array[], int esq, int dir) {
             j--;
         }
     }
+    
     if (esq < j)
         quicksort(array, esq, j);
     if (i < dir)
