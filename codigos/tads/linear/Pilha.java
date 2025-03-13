@@ -9,9 +9,9 @@ class Pilha {
         pilha.empilhar(8);
         pilha.mostrar();
 
-        pilha.remover();
-        pilha.remover();
-        pilha.remover();
+        pilha.desempilhar();
+        pilha.desempilhar();
+        pilha.desempilhar();
         pilha.mostrar();
     }    
 }
@@ -35,7 +35,7 @@ class CriarPilha {
         cont++;
     }
 
-    int remover() {
+    int desempilhar() {
         if (cont == 0) {
             System.err.println();
             return cont;
