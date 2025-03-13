@@ -47,6 +47,17 @@ void inserir(Lista *lista, int x, int pos) {
     lista->cont++;
 }
 
+void inserirOrdenado(Lista *lista, int x) {
+    if (lista->cont >= sizeof(lista)) return;
+
+    int pos;
+    for (pos = lista->cont-1; pos >= 0 && lista->elem[pos] > x; pos--) {
+        lista->elem[pos+1] = lista->elem[pos];
+    }
+    lista->elem[pos+1] = x;
+    lista->cont++;
+}
+
 void mostrar(Lista *lista) {
     for (int i = 0; i < lista->cont; i++) {
         printf("%d ", lista->elem[i]);
@@ -63,6 +74,33 @@ int main() {
     inserirFim(lista, 28);
     inserir(lista, 12, 2);
     mostrar(lista);
+
+    removerFim(lista);
+    remover(lista);
+    mostrar(lista);
+
+    removerInicio(lista);
+    mostrar(lista);
+
+    inserirFim(lista, 10);
+    mostrar(lista);
+
+    printf("Soma: %d", somar());
+    printf("Maior: %d", maior());
+    elementos(lista);
+
+    removerFim(lista);
+    removerFim(lista);
+    removerFim(lista);
+
+    inserirOrdenado(lista, 12);
+    inserirOrdenado(lista, 5);
+    inserirOrdenado(lista, 18);
+    inserirOrdenado(lista, 9);
+    inserirOrdenado(lista, 30);
+    mostrar(lista);
+
+    printf("%d", pesquisar(lista, 6));
 
     return 0;
 }
