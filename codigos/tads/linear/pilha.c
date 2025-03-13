@@ -20,14 +20,14 @@ void delPilha(Pilha *pilha) {
     free(pilha);
 }
 
-void inserir(Pilha *pilha, int x) {
+void empilhar(Pilha *pilha, int x) {
     if (pilha->cont >= sizeof(pilha)) return;
 
     pilha->elem[pilha->cont] = x;
     pilha->cont++;
 }
 
-int remover(Pilha *pilha) {
+int desempilhar(Pilha *pilha) {
     if (pilha->cont == 0) return pilha->cont;
 
     return pilha->elem[--pilha->cont];
@@ -43,17 +43,17 @@ void mostrar(Pilha *pilha) {
 int main() {
     Pilha *pilha = newPilha(6);
 
-    inserir(pilha, 3);
-    inserir(pilha, 5);
-    inserir(pilha, 8);
-    inserir(pilha, 9);
-    inserir(pilha, 7);
-    inserir(pilha, 2);
+    empilhar(pilha, 3);
+    empilhar(pilha, 5);
+    empilhar(pilha, 8);
+    empilhar(pilha, 9);
+    empilhar(pilha, 7);
+    empilhar(pilha, 2);
     mostrar(pilha);
 
-    remover(pilha);
-    remover(pilha);
-    remover(pilha);
+    desempilhar(pilha);
+    desempilhar(pilha);
+    desempilhar(pilha);
     mostrar(pilha);
 
     return 0;
