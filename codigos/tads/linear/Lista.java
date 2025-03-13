@@ -212,4 +212,18 @@ class CriarLista {
     
         return res;
     }
+
+    int binsearchrec(int x, int esq, int dir) {
+        if (esq > dir) return -1;
+    
+        int meio = (esq + dir) / 2;
+        
+        if (array[meio] == x) {
+            return meio;
+        } else if (array[meio] < x) {
+            return binsearchrec(x, meio + 1, dir);
+        } else {
+            return binsearchrec(x, esq, meio - 1);
+        }
+    }
 }
