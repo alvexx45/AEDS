@@ -41,7 +41,7 @@ class CriarPilha {
             return cont;
         }
 
-        return --cont;
+        return array[--cont];
     }
 
     void mostrar() {

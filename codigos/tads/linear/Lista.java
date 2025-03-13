@@ -106,7 +106,7 @@ class CriarLista {
         }
         
         int resp = array[0];
-        n--;
+        cont--;
 
         for (int i = 0; i < cont; i++) {
             array[i] = array[i + 1];
