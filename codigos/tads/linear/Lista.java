@@ -9,6 +9,8 @@ class Lista {
         lista.inserir(12, 2);
         lista.mostrar();
 
+        System.out.println(lista.pesquisar(6));
+
         lista.removerFim();
         lista.remover(1);
         lista.mostrar();
@@ -34,7 +36,7 @@ class Lista {
         lista.inserirOrdenado(30);
         lista.mostrar();
 
-        System.out.println(lista.pesquisar(6));
+        System.out.println(lista.binsearchrec(12, 0, lista.cont-1));
     }
 }
 
@@ -213,13 +215,16 @@ class CriarLista {
         return res;
     }
 
-    int binsearchrec(int x, int esq, int dir) {
-        if (esq > dir) return -1;
+    boolean binsearchrec(int x, int esq, int dir) {
+        boolean res = false;
+        
+        if (esq > dir) return res;
     
         int meio = (esq + dir) / 2;
         
         if (array[meio] == x) {
-            return meio;
+            res = true;
+            return res;
         } else if (array[meio] < x) {
             return binsearchrec(x, meio + 1, dir);
         } else {
