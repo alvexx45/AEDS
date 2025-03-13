@@ -202,4 +202,14 @@ class CriarLista {
 
         return res;
     }
+
+    void inverter() {}
+
+    void inverterRec() {}
+
+    boolean isOrdenada() { 
+        boolean res = false;
+    
+        return res;
+    }
 }
