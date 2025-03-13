@@ -39,6 +39,10 @@ class Lista {
         lista.mostrar();
         
         System.out.println(lista.binsearchrec(12, 0, lista.cont-1));
+        
+        //lista.inverter();
+        lista.inverterRec(0, lista.cont-1);
+        lista.mostrar();
     }
 }
 
@@ -207,9 +211,23 @@ class CriarLista {
         return res;
     }
 
-    void inverter() {}
+    void inverter() {
+        for (int i = 0, j = cont-1; i < j; i++, j--) {
+            int tmp = array[i];
+            array[i] = array[j];
+            array[j] = tmp;
+        }
+    }
 
-    void inverterRec() {}
+    void inverterRec(int i, int j) {
+        if (i >= j) return;
+
+        int tmp = array[i];
+        array[i] = array[j];
+        array[j] = tmp;
+        
+        inverterRec(i+1, j-1);
+    }
 
     boolean isOrdenada() {
         boolean res = true;
