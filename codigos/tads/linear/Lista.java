@@ -56,6 +56,7 @@ class CriarLista {
         for (int i = cont; i > 0; i--) {
             array[i] = array[i - 1];
         }
+        // auxIns(0);
 
         array[0] = x;
         cont++;
@@ -80,10 +81,17 @@ class CriarLista {
         for (int i = cont; i > pos; i--) {
             array[i] = array[i - 1];
         }
+        // auxIns(pos);
 
         array[pos] = x;
         cont++;
     }
+
+    // void auxIns(int lim) {
+    //     for (int i = cont; i > lim; i--) {
+    //         array[i] = array[i-1];
+    //     }
+    // }
 
     void inserirOrdenado(int x) {
         if (cont >= array.length) {
