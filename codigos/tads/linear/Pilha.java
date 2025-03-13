@@ -2,11 +2,11 @@ class Pilha {
     public static void main(String[] args) {
         CriarPilha pilha = new CriarPilha(6);
 
-        pilha.inserir(5);
-        pilha.inserir(4);
-        pilha.inserir(2);
-        pilha.inserir(13);
-        pilha.inserir(8);
+        pilha.empilhar(5);
+        pilha.empilhar(4);
+        pilha.empilhar(2);
+        pilha.empilhar(13);
+        pilha.empilhar(8);
         pilha.mostrar();
 
         pilha.remover();
@@ -25,7 +25,7 @@ class CriarPilha {
         cont = 0;
     }
 
-    void inserir(int x) {
+    void empilhar(int x) {
         if (cont >= array.length) {
             System.err.println();
             return;
