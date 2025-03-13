@@ -33,6 +33,8 @@ class Lista {
         lista.inserirOrdenado(9);
         lista.inserirOrdenado(30);
         lista.mostrar();
+
+        System.out.println(lista.pesquisar(6));
     }
 }
 
@@ -178,5 +180,18 @@ class CriarLista {
         }
 
         System.out.println("Pares: " + pares + " | Mult. Cinco: " + mcinc);
+    }
+
+    boolean pesquisar(int x) {
+        boolean res = false;
+        
+        for (int i = 0; i < cont; i++) {
+            if (array[i] == x) {
+                res = true;
+                i = cont;
+            }
+        }
+
+        return res;
     }
 }
