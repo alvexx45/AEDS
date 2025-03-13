@@ -2,23 +2,23 @@ class Fila {
     public static void main(String[] args) {
         CriarFila fila = new CriarFila(6);
         
-        fila.inserir(5);
-        fila.inserir(4);
-        fila.inserir(2);
-        fila.inserir(13);
-        fila.inserir(8);
+        fila.enfileirar(5);
+        fila.enfileirar(4);
+        fila.enfileirar(2);
+        fila.enfileirar(13);
+        fila.enfileirar(8);
         fila.mostrar();
 
-        fila.remover();
-        fila.remover();
-        fila.remover();
+        fila.desenfileirar();
+        fila.desenfileirar();
+        fila.desenfileirar();
         fila.mostrar();
 
-        fila.inserir(11);
-        fila.inserir(9);
+        fila.enfileirar(11);
+        fila.enfileirar(9);
         fila.mostrar();
 
-        fila.remover();
+        fila.desenfileirar();
         fila.mostrar();
 
         System.out.println(fila.pesquisar(90));
@@ -42,7 +42,7 @@ class CriarFila {
         // tamanho = 0;
     // }
 
-    void inserir(int x) {
+    void enfileirar(int x) {
         if (((ultimo + 1) % array.length) == primeiro) {
             System.err.println();
             return;
@@ -55,7 +55,7 @@ class CriarFila {
         // tamanho++;
     }
 
-    int remover() {
+    int desenfileirar() {
         if (primeiro == ultimo) {
             System.err.println();
             return ultimo;
