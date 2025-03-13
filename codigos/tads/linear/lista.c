@@ -18,6 +18,7 @@ Lista *newLista(int size) {
 
 void delLista(Lista *lista) {
     free(lista);
+    free(lista->elem);
 }
 
 void inserirInicio(Lista *lista, int x) {
@@ -133,6 +134,8 @@ int main() {
     mostrar(lista);
 
     // printf("%d", pesquisar(lista, 6));
+
+    delLista(lista);
 
     return 0;
 }
