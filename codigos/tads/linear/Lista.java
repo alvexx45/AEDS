@@ -9,6 +9,7 @@ class Lista {
         lista.inserir(12, 2);
         lista.mostrar();
 
+        System.out.println(lista.isOrdenada());
         System.out.println(lista.pesquisar(6));
 
         lista.removerFim();
@@ -34,8 +35,9 @@ class Lista {
         lista.inserirOrdenado(18);
         lista.inserirOrdenado(9);
         lista.inserirOrdenado(30);
+        System.out.println(lista.isOrdenada());
         lista.mostrar();
-
+        
         System.out.println(lista.binsearchrec(12, 0, lista.cont-1));
     }
 }
@@ -209,9 +211,19 @@ class CriarLista {
 
     void inverterRec() {}
 
-    boolean isOrdenada() { 
-        boolean res = false;
+    boolean isOrdenada() {
+        boolean res = true;
     
+        if (cont <= 1) {
+            res = true;
+        }
+
+        for (int i = 0; i < cont - 1; i++) {
+            if (array[i] > array[i+1]) {
+                res = false;
+                i = cont;
+            }
+        }
         return res;
     }
 
