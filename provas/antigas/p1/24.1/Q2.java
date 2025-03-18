@@ -114,9 +114,9 @@ class CriarLista {
 
 class Exercicio {
     boolean isPalindromo(String s) {
-        boolean res = true;
-
         CriarLista lista = new CriarLista(s.length());
+        
+        boolean res = true;
 
         for (int i = 0; i < s.length(); i++) {
             lista.inserirFim(s.charAt(i));
