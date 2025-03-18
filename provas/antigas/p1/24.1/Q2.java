@@ -122,17 +122,10 @@ class Exercicio {
             lista.inserirFim(s.charAt(i));
         }
 
-        int inicio = 0;
-        int fim = lista.cont - 1;
-
-        while (inicio < fim) {
-            if (lista.array[inicio] != lista.array[fim]) {
+        while (lista.cont > 1) {
+            if (lista.removerInicio() != lista.removerFim()) {
                 res = false;
-                inicio = fim;
             }
-
-            inicio++;
-            fim--;
         }
 
         return res;
