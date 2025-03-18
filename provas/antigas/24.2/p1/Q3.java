@@ -47,10 +47,10 @@ class FilaPrioridade {
 
         int pos;
 
-        for (pos = n - 1; pos >= 0 && itens[pos].prioridade < p.prioridade; pos--) {
-            itens[pos + 1] = itens[pos];
+        for (pos = n-1; pos >= 0 && itens[pos].prioridade < p.prioridade; pos--) {
+            itens[pos+1] = itens[pos];
         }
-        itens[pos + 1] = p;
+        itens[pos+1] = p;
 
         n++;
     }
@@ -63,8 +63,8 @@ class FilaPrioridade {
 
         Paciente rm = itens[0];
 
-        for (int i = 0; i < n - 1; i++) {
-            itens[i] = itens[i + 1];
+        for (int i = 0; i < n-1; i++) {
+            itens[i] = itens[i+1];
         }
 
         n--;
