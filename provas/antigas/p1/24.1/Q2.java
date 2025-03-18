@@ -125,6 +125,7 @@ class Exercicio {
         while (lista.cont > 1) {
             if (lista.removerInicio() != lista.removerFim()) {
                 res = false;
+                lista.cont = 1;
             }
         }
 
