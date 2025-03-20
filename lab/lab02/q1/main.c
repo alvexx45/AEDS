@@ -24,6 +24,5 @@ int main() {
         combinar(str1, str2);
     }
 
-
     return 0;
 }
