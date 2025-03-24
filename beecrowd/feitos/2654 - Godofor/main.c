@@ -27,6 +27,7 @@ int main() {
         scanf("%s %d %d %d", d[i].nome, &d[i].power, &d[i].kills, &d[i].mortes);
     }
 
+    
     qsort(d, n, sizeof(Deuses), compare);
     printf("%s", d[0].nome);
 
