@@ -23,5 +23,7 @@ public class Main {
             String frase = sc.nextLine();
             System.out.println(contar(vogais, frase));
         }
+
+        sc.close();
     }
 }
