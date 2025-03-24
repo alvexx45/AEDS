@@ -44,8 +44,6 @@ int padrao(char placa[11]) {
 int main() {
     char placa[11];
 
-    scanf("%s", placa);
-    printf("%d\n", padrao(placa));
     while (scanf("%s", placa) != EOF) {
         printf("%d\n", padrao(placa));
     }
