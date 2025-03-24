@@ -19,7 +19,27 @@ typedef struct {
 
 void sort (Deuses d[], int n) {
     for (int i = 0; i < n-1; i++) {
-        int menor = i;
+        int maior = i;
+        for (int j = i+1; j < n; j++) {
+            if (d[j].power > d[maior].power) {
+                maior = j;
+            } else if (d[j].power == d[maior].power) {
+                if (d[j].kills > d[maior].kills) {
+                    maior = j;
+                }
+            } else if (d[j].kills == d[maior].kills) {
+                if (d[j].mortes > d[maior].mortes) {
+                    maior = j;
+                }
+            } else if (d[j].kills == d[maior].kills) {
+                if (strcmp(d[j].nome, d[maior].nome) < 0) {
+                    maior = j;
+                }
+            }
+        }
+        Deuses tmp = d[i];
+        d[i] = d[maior];
+        d[maior] = tmp;
     }
 }
 
