@@ -20,6 +20,7 @@ typedef struct {
 void sort (Deuses d[], int n) {
     for (int i = 0; i < n-1; i++) {
         int maior = i;
+
         for (int j = i+1; j < n; j++) {
             if (d[j].power > d[maior].power) {
                 maior = j;
@@ -48,7 +49,6 @@ int main() {
     scanf("%d", &n);
 
     Deuses d[n];
-
     for (int i = 0; i < n; i++) {
         scanf("%s %d %d %d", d[i].nome, &d[i].power, &d[i].kills, &d[i].mortes);
     }
