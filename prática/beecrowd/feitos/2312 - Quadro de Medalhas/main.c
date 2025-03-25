@@ -11,21 +11,11 @@ void sort(Pais p[], int n) {
     for (int i = 0; i < n-1; i++) {
         int maior = i;
         for (int j = i+1; j < n; j++) {
-            if (p[j].ouro > p[maior].ouro) {
-                maior = j;
-            } else if (p[j].ouro == p[maior].ouro) {
-                if (p[j].prata > p[maior].prata) {
+            if(p[j].ouro > p[maior].ouro ||
+                (p[j].ouro == p[maior].ouro && p[j].prata > p[maior].prata) ||
+                (p[j].prata == p[maior].prata && p[j].bronze > p[maior].bronze)){
                     maior = j;
                 }
-            } else if (p[j].prata == p[maior].prata) {
-                if (p[j].bronze > p[maior].bronze) {
-                    maior = j;
-                }
-            } else if (p[j].bronze == p[maior].bronze) {
-                if (strcmp(p[j].nome, p[maior].nome) < 0) {
-                    maior = j;
-                }
-            }
         }
         
         Pais tmp = p[i];
