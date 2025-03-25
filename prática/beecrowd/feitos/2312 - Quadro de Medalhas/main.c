@@ -13,7 +13,8 @@ void sort(Pais p[], int n) {
         for (int j = i+1; j < n; j++) {
             if(p[j].ouro > p[maior].ouro ||
                 (p[j].ouro == p[maior].ouro && p[j].prata > p[maior].prata) ||
-                (p[j].prata == p[maior].prata && p[j].bronze > p[maior].bronze)){
+                (p[j].prata == p[maior].prata && p[j].bronze > p[maior].bronze) ||
+                (p[j].bronze == p[maior].bronze && strcmp(p[j].nome, p[maior].nome) < 0)){
                     maior = j;
                 }
         }
