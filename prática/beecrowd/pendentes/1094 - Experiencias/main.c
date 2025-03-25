@@ -13,7 +13,6 @@ int main() {
 
     Cobaias c[n];
 
-    int soma = 0;
     int coelhos = 0, ratos = 0, sapos = 0;
     for (int i = 0; i < n; i++) {
         scanf("%d %c", &c[i].qtd, &c[i].tipo);
@@ -26,7 +25,7 @@ int main() {
             sapos += c[i].qtd;
         }
     }
-    soma = coelhos + ratos + sapos;
+    int soma = coelhos + ratos + sapos;
     
     double pCoelhos = (coelhos * 100.0) / soma;
     double pRatos = (ratos * 100.0) / soma;
