@@ -18,8 +18,6 @@ int main() {
     char str1[101];
     char str2[101];
 
-    scanf("%s %s", str1, str2);
-    combinar(str1, str2);
     while (scanf("%s %s", str1, str2) != EOF) {
         combinar(str1, str2);
     }
