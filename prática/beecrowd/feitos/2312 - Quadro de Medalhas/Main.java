@@ -5,20 +5,11 @@ class Main {
         for (int i = 0; i < n-1; i++) {
             int maior = i;
             for (int j = i+1; j < n; j++) {
-                if (p[j].ouro > p[maior].ouro) {
+                if(p[j].ouro > p[maior].ouro ||
+                (p[j].ouro == p[maior].ouro && p[j].prata > p[maior].prata) ||
+                (p[j].prata == p[maior].prata && p[j].bronze > p[maior].bronze) ||
+                (p[j].bronze == p[maior].bronze && p[j].nome.compareTo(p[maior].nome) < 0)){
                     maior = j;
-                } else if (p[j].ouro == p[maior].ouro) {
-                    if (p[j].prata > p[maior].prata) {
-                        maior = j;
-                    }
-                } else if (p[j].prata == p[maior].prata) {
-                    if (p[j].bronze > p[maior].bronze) {
-                        maior = j;
-                    }
-                } else if (p[j].bronze == p[maior].bronze) {
-                    if (p[j].nome.compareTo(p[maior].nome) < 0) {
-                        maior = j;
-                    }
                 }
             }
             
