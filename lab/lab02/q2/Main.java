@@ -2,18 +2,17 @@ import java.util.Scanner;
 
 class Main {
     public static String espelhar(int n1, int n2) {
-        String res = "";
+        String normal = "";
         
         for (int i = n1; i <= n2; i++) {
-            res += Integer.toString(i);
+            res += i;
         }
 
-        for (int i = n2; i >= n1; i--) {
-            String inverter = new StringBuilder(Integer.toString(i)).reverse().toString();
-            res += inverter;
+        for (int i = normal.length()-1; i >= 0; i--) {
+            invertida += i;
         }
 
-        return res;
+        return normal + invertida;
     }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -26,7 +25,6 @@ class Main {
             n1 = sc.nextInt();
             n2 = sc.nextInt();
             System.out.println(espelhar(n1, n2));
-                
         }
 
         sc.close();
