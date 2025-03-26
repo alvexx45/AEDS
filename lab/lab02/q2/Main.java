@@ -3,11 +3,11 @@ import java.util.Scanner;
 class Main {
     public static String espelhar(int n1, int n2) {
         String normal = "";
-        
         for (int i = n1; i <= n2; i++) {
-            res += i;
+            normal += i;
         }
 
+        String invertida = "";
         for (int i = normal.length()-1; i >= 0; i--) {
             invertida += i;
         }
