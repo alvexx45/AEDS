@@ -10,13 +10,13 @@ int padrao(char placa[11]) {
     if (len == 8 && placa[3] == '-') {
         for (int i = 0; i < 3; i++) {
             if (!isalpha(placa[i])) {
-                i = 3;
+                return 0;
             }
         }
     
         for (int i = 4; i < 8; i++) {
             if (!isdigit(placa[i])) {
-                i = 8;
+                return 0;
             }
         }
 
@@ -25,13 +25,13 @@ int padrao(char placa[11]) {
     else if (len == 7  && isalpha(placa[4])) {
         for (int i = 0; i < 3; i++) {
             if (!isalpha(placa[i])) {
-                i = 3;
+                return 0;
             }
         }
 
         for (int i = 3; i < 7; i++) {
             if (!placa[4] && !isdigit(placa[i])) {
-                i = 7;
+                return 0;
             }
         }
 
