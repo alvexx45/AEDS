@@ -21,7 +21,6 @@ int main() {
 
     while(scanf("%s", str) != EOF) {
         int res = assuntos(str);
-
         if (res == 0) {
             printf("Partiu RU!\n");
         } else {
