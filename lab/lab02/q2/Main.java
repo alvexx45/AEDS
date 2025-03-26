@@ -9,7 +9,7 @@ class Main {
 
         String invertida = "";
         for (int i = normal.length()-1; i >= 0; i--) {
-            invertida += i;
+            invertida += normal.charAt(i);
         }
 
         return normal + invertida;
@@ -17,13 +17,9 @@ class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        int n1 = sc.nextInt();
-        int n2 = sc.nextInt();
-        System.out.println(espelhar(n1, n2));
-
         while (sc.hasNextInt()) {
-            n1 = sc.nextInt();
-            n2 = sc.nextInt();
+            int n1 = sc.nextInt();
+            int n2 = sc.nextInt();
             System.out.println(espelhar(n1, n2));
         }
 
