@@ -1,9 +1,38 @@
 import java.util.*;
 
 class Main {
+    public static void sort(Renas r[], int n) {
+        for (int i = 0; i < n-1; i++) {
+            int maior = i;
+            for (int j = i+1; j < n; j++) {
+                if (r[maior].peso < r[j].peso) {
+                    maior = j;
+                } else if (r[maior].peso == r[j].peso) {
+                    if (r[maior].idade > r[j].idade) {
+                        maior = j;
+                    } else if (r[maior].idade == r[j].idade) {
+                        if (r[maior].alt < r[j].alt) {
+                            maior = j;
+                        } else if (r[maior].alt == r[j].alt) {
+                            if (r[maior].nome.compareTo(r[j].nome) > 0) {
+                                maior = j;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (maior != i) {
+                Renas tmp = r[i];
+                r[i] = r[maior];
+                r[maior] = tmp;
+            }
+        }
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in).useLocale(Locale.US);
-        
+
         int t = sc.nextInt();
         for (int i = 0; i < t; i++) {
             int n = sc.nextInt();
@@ -16,23 +45,10 @@ class Main {
                 int peso = sc.nextInt();
                 int idade = sc.nextInt();
                 double alt = sc.nextDouble();
-                
+
                 r[j] = new Renas(nome, peso, idade, alt);
             }
-
-            Arrays.sort(r, (r1, r2) -> {
-                if (r1.peso != r2.peso)
-                    return r2.peso - r1.peso;
-    
-                if (r1.idade != r2.idade)
-                    return r1.idade - r2.idade;
-
-                if (Double.compare(r1.alt, r2.alt) != 0) {
-                    return Double.compare(r2.alt, r1.alt);
-                }
-
-                return r1.nome.compareTo(r2.nome);
-            });
+            sort(r, n);
 
             System.out.printf("CENARIO {%d}\n", i + 1);
             for (int k = 0; k < m; k++) {
