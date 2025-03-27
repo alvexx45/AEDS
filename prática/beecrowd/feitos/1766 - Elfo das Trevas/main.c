@@ -8,6 +8,7 @@ typedef struct {
     float alt;
 } Renas;
 
+/*
 int compare(const void *a, const void *b) {
     Renas *r1 = (Renas *)a;
     Renas *r2 = (Renas *)b;
@@ -23,6 +24,24 @@ int compare(const void *a, const void *b) {
 
     return strcmp(r1->nome, r2->nome);
 }
+*/
+
+void sort(Renas r[], int n) {
+    for (int i = 0; i < n-1; i++) {
+        int maior = i;
+        for (int j = i+1; j < n; j++) {
+            if (r[j].peso > r[maior].peso || 
+                (r[j].peso == r[maior].peso && r[j].idade < r[maior].idade) || 
+                (r[j].idade == r[maior].peso && r[j].alt > r[maior].alt) || 
+                (r[j].alt == r[maior].alt && strcmp(r[j].nome, r[maior].nome) < 0)) {
+                maior = j;
+            }
+        }
+        Renas tmp = r[i];
+        r[i] = r[maior];
+        r[maior] = tmp;
+    }
+}
 
 int main() {
     int t;
@@ -37,7 +56,8 @@ int main() {
         for (int j = 0; j < n; j++) {
             scanf("%s %d %d %f", r[j].nome, &r[j].peso, &r[j].idade, &r[j].alt);
         }
-        qsort(r, n, sizeof(Renas), compare);
+        sort(r, n);
+        // qsort(r, n, sizeof(Renas), compare);
 
         printf("CENARIO {%d}\n", i + 1);
         for (int k = 0; k < m; k++) {
