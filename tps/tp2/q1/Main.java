@@ -152,7 +152,7 @@ class Show {
     }
 
     public void imprimir() {
-        System.out.printf("=> %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s##\n",
+        System.out.printf("=> %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ##\n",
             id, type, title, director, Arrays.toString(cast), country,
             date == null ? "NaN" : DATE_FORMATTER.format(date),
             year == 0 ? "NaN" : String.valueOf(year),
