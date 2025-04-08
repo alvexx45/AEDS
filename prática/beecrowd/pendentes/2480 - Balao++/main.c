@@ -7,9 +7,9 @@ int main() {
     scanf("%d %d", &r, &l);
 
     float v = (4.0/3.0) * (3.1415 * (r*r*r));
-    float res = l/v;
+    int res = l/v;
 
-    printf("%.0f\n", res);
+    printf("%d\n", res);
 
     return 0;
 }
