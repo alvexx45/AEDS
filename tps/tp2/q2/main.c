@@ -212,7 +212,6 @@ int main() {
                 ler(&show, line);
                 lista[i++] = show;
                 imprimir(&show);
-                freeShow(&show);
                 freeFields(campos, field_count);
                 break;
             }
