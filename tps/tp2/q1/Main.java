@@ -120,33 +120,32 @@ class Show {
 
     public void ler(String csv) {
         String[] campos = splitCSV(csv);
-
+    
         if (campos.length >= 11) {
             setId(campos[0].isEmpty() ? "NaN" : campos[0]);
             setType(campos[1].isEmpty() ? "NaN" : campos[1]);
             setTitle(campos[2].isEmpty() ? "NaN" : campos[2]);
             setDirector(campos[3].replace("\"", "").isEmpty() ? "NaN" : campos[3].replace("\"", ""));
-
+    
             String castStr = campos[4].replace("\"", "");
-            String[] castArray = castStr.isEmpty() ? new String[0] : castStr.split(", ");
-            Arrays.sort(castArray);
+            String[] castArray = castStr.isEmpty() ? new String[]{"NaN"} : castStr.split(", ");
+            if (!castStr.isEmpty()) Arrays.sort(castArray);
             setCast(castArray);
-
+    
             setCountry(campos[5].replace("\"", "").isEmpty() ? "NaN" : campos[5].replace("\"", ""));
-
+    
             String dateStr = campos[6].replace("\"", "");
             try {
                 setDate(dateStr.isEmpty() ? null : LocalDate.parse(dateStr, DATE_FORMATTER));
             } catch (Exception e) {
                 setDate(null);
             }
-
+    
             setYear(campos[7].isEmpty() ? 0 : Integer.parseInt(campos[7]));
             setRating(campos[8].isEmpty() ? "NaN" : campos[8]);
             setDuration(campos[9].isEmpty() ? "NaN" : campos[9]);
-
-            String[] listedArray = campos[10].split(", ");
-            Arrays.sort(listedArray);
+    
+            String[] listedArray = campos[10].isEmpty() ? new String[]{"NaN"} : campos[10].split(", ");
             setListed(listedArray);
         }
     }

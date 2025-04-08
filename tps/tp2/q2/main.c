@@ -86,8 +86,9 @@ void ler(Show* show, const char* csv) {
             cast_str[strlen(cast_str) - 1] = '\0';
         }
         if (cast_str[0] == '\0') {
-            show->cast = NULL;
-            show->cast_count = 0;
+            show->cast = malloc(sizeof(char*));
+            show->cast[0] = strdup("NaN");
+            show->cast_count = 1;
         } else {
             show->cast = malloc(MAX_CAST * sizeof(char*));
             show->cast_count = 0;
@@ -128,17 +129,23 @@ void ler(Show* show, const char* csv) {
             listed_str++;
             listed_str[strlen(listed_str) - 1] = '\0';
         }
-        show->listed = malloc(MAX_LISTED * sizeof(char*));
-        show->listed_count = 0;
-        char* start = listed_str;
-        char* end;
-        while ((end = strstr(start, ", ")) != NULL && show->listed_count < MAX_LISTED) {
-            *end = '\0';
-            show->listed[show->listed_count++] = strdup(start);
-            start = end + 2;
-        }
-        if (*start != '\0' && show->listed_count < MAX_LISTED) {
-            show->listed[show->listed_count++] = strdup(start);
+        if (listed_str[0] == '\0') {
+            show->listed = malloc(sizeof(char*));
+            show->listed[0] = strdup("NaN");
+            show->listed_count = 1;
+        } else {
+            show->listed = malloc(MAX_LISTED * sizeof(char*));
+            show->listed_count = 0;
+            char* start = listed_str;
+            char* end;
+            while ((end = strstr(start, ", ")) != NULL && show->listed_count < MAX_LISTED) {
+                *end = '\0';
+                show->listed[show->listed_count++] = strdup(start);
+                start = end + 2;
+            }
+            if (*start != '\0' && show->listed_count < MAX_LISTED) {
+                show->listed[show->listed_count++] = strdup(start);
+            }
         }
         free(listed_str);
     }
@@ -158,7 +165,7 @@ void imprimir(const Show* show) {
         printf("%s", show->listed[i]);
         if (i < show->listed_count - 1) printf(", ");
     }
-    printf("]##\n");
+    printf("] ##\n");
 }
 
 void freeShow(Show* show) {
@@ -181,7 +188,7 @@ void freeShow(Show* show) {
 }
 
 int main() {
-    char path[] = "/tmp/disneyplus.csv";
+    char path[] = "../disneyplus.csv";
     Show lista[1369];
     int i = 0;
 
