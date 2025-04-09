@@ -187,8 +187,33 @@ void freeShow(Show* show) {
     free(show->listed);
 }
 
+void selection(Show lista[], int i, int n) {
+    if (i >= n-1) return;
+
+    int menor = i;
+    for (int j = i+1; j < n; j++) {
+        if (strcmp(lista[j].title, lista[menor].title) < 0) {
+            menor = j;
+        }
+    }
+
+    if (menor != i) {
+        Show tmp = lista[i];
+        lista[i] = lista[menor];
+        lista[menor] = tmp;
+    }
+
+    selection(lista, i+1, n);
+}
+
+void sort(Show lista[], int n) {
+    if (n <= 1) return;
+
+    selection(lista, 0, n);
+}
+
 int main() {
-    char path[] = "/tmp/disneyplus.csv";
+    char path[] = "../disneyplus.csv";
     Show lista[1369];
     int i = 0;
 
@@ -211,7 +236,6 @@ int main() {
                 Show show;
                 ler(&show, line);
                 lista[i++] = show;
-                imprimir(&show);
                 freeFields(campos, field_count);
                 break;
             }
@@ -220,6 +244,15 @@ int main() {
         fclose(file);
 
         scanf("%s", lerId);
+    }
+
+    sort (lista, i);
+    for (int j = 0; j < i; j++) {
+        imprimir(&lista[j]);
+    }
+
+    for (int j = 0; j < i; j++) {
+        freeShow(&lista[j]);
     }
 
     return 0;

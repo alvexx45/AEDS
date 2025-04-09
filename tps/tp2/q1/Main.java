@@ -7,6 +7,7 @@ class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         
+        // String path = "/tmp/disneyplus.csv";
         String path = "../disneyplus.csv";
 
         Show[] lista = new Show[1369];
