@@ -5,16 +5,27 @@ import java.util.*;
 
 class Main {
     public static void sort(Show[] lista, int n) {
-        for (int i = 0; i < n-1; i++) {
-            int menor = i;
-            for (int j = i+1; j < n; j++) {
-                if (lista[j].getTitle().compareTo(lista[menor].getTitle()) < 0) {
-                    menor = j;
-                }
+        int h = 1;
+        do {
+            h = (h*3) + 1;
+        } while (h < n);
+        do {
+            h /= 3;
+            for (int cor = 0; cor < h; cor++) {
+                insercao(lista, cor, h, n);
             }
+        } while (h != 1);
+    }
+
+    public static void insercao(Show lista[], int cor, int h, int n) {
+        for (int i = (h+cor); i < n; i+= h) {
             Show tmp = lista[i];
-            lista[i] = lista[menor];
-            lista[menor] = tmp;
+            int j = i-h;
+            while ((j >= 0) && lista[j].getType().compareTo(tmp.getType()) < 0) {
+                lista[j+h] = lista[j];
+                j -= h;                
+            }
+            lista[j+h] = tmp;
         }
     }
     
