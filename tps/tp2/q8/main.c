@@ -187,33 +187,34 @@ void freeShow(Show* show) {
     free(show->listed);
 }
 
-void selection(Show lista[], int i, int n) {
-    if (i >= n-1) return;
-
-    int menor = i;
-    for (int j = i+1; j < n; j++) {
-        if (strcmp(lista[j].title, lista[menor].title) < 0) {
-            menor = j;
-        }
-    }
-
-    if (menor != i) {
+void insercao(Show lista[], int cor, int h, int n) {
+    for (int i = (h+cor); i < n; i+= h) {
         Show tmp = lista[i];
-        lista[i] = lista[menor];
-        lista[menor] = tmp;
+        int j = i-h;
+        while ((j >= 0) && (strcmp(lista[j].type, tmp.type) < 0 || (strcmp(lista[j].type, tmp.type) == 0 && strcmp(lista[j].title, tmp.title) < 0))) {
+            lista[j+h] = lista[j];
+            j -= h;                
+        }
+        lista[j+h] = tmp;
     }
-
-    selection(lista, i+1, n);
 }
 
 void sort(Show lista[], int n) {
-    if (n <= 1) return;
-
-    selection(lista, 0, n);
+    int h = 1;
+    do {
+        h = (h*3) + 1;
+    } while (h < n);
+    do {
+        h /= 3;
+        for (int cor = 0; cor < h; cor++) {
+            insercao(lista, cor, h, n);
+        }
+    } while (h != 1);
 }
 
 int main() {
-    char path[] = "../disneyplus.csv";
+    // char path[] = "../disneyplus.csv";
+    char path[] = "/tmp/disneyplus.csv";
     Show lista[1369];
     int i = 0;
 
