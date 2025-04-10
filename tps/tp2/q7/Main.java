@@ -5,34 +5,22 @@ import java.util.*;
 
 class Main {
     public static void sort(Show[] lista, int n) {
-        int h = 1;
-        do {
-            h = (h*3) + 1;
-        } while (h < n);
-        do {
-            h /= 3;
-            for (int cor = 0; cor < h; cor++) {
-                insercao(lista, cor, h, n);
-            }
-        } while (h != 1);
-    }
-
-    public static void insercao(Show lista[], int cor, int h, int n) {
-        for (int i = (h+cor); i < n; i+= h) {
+        for (int i = 1; i < n; i++) {
             Show tmp = lista[i];
-            int j = i-h;
-            while ((j >= 0) && lista[j].getType().compareTo(tmp.getType()) < 0) {
-                lista[j+h] = lista[j];
-                j -= h;                
+            int j = i-1;
+            while ((j >= 0) && (lista[j].getType().compareTo(tmp.getType()) > 0 || (lista[j].getType().compareTo(tmp.getType()) == 0 && lista[j].getTitle().compareTo(tmp.getTitle()) > 0))) {
+                lista[j+1] = lista[j];
+                j--;                
             }
-            lista[j+h] = tmp;
+            lista[j+1] = tmp;
         }
     }
     
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         
-        String path = "../disneyplus.csv";
+        // String path = "../disneyplus.csv";
+        String path = "/tmp/disneyplus.csv";
 
         Show[] lista = new Show[1369];
         int i = 0;
