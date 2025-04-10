@@ -4,17 +4,56 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 class Main {
-    public static void sort(Show[] lista, int n) {
-        for (int i = 0; i < n-1; i++) {
-            int menor = i;
-            for (int j = i+1; j < n; j++) {
-                if (lista[j].getTitle().compareTo(lista[menor].getTitle()) < 0) {
-                    menor = j;
-                }
-            }
+    public static boolean hasFilho(int i, int n) {
+        return (i <= (n/2));
+    }
+
+    public static int getMaiorFilho(Show[] lista, int i, int tam){
+        int filho;
+        if (2*i == tam || (lista[2*i].getDirector().compareTo(lista[2*i+1].getDirector()) > 0 || lista[2*i].getDirector().compareTo(lista[2*i+1].getDirector()) == 0 && lista[2*i].getTitle().compareTo(lista[2*i+1].getTitle()) > 0)) {
+            filho = 2*i;
+        } else {
+            filho = 2*i + 1;
+        }
+
+        return filho;
+    }
+
+    public static void construir(Show[] lista, int n) {
+        for (int i = n; i > 1 && (lista[i].getDirector().compareTo(lista[i/2].getDirector()) > 0 || (lista[i].getDirector().compareTo(lista[i/2].getDirector()) == 0 && lista[i].getTitle().compareTo(lista[i/2].getTitle()) > 0)); i /= 2) {
             Show tmp = lista[i];
-            lista[i] = lista[menor];
-            lista[menor] = tmp;
+            lista[i] = lista[i/2];
+            lista[i/2] = tmp;
+        }
+    }
+
+    public static void reconstruir(Show[] lista, int n) {
+        int i = 1;
+
+        while (hasFilho(i, n)) {
+            int filho = getMaiorFilho(lista, i, n);
+            if (lista[i].getDirector().compareTo(lista[filho].getDirector()) < 0 || (lista[i].getDirector().compareTo(lista[filho].getDirector()) == 0 && lista[i].getTitle().compareTo(lista[filho].getTitle()) < 0)) {
+                Show tmp = lista[i];
+                lista[i] = lista[filho];
+                lista[filho] = tmp;
+            } else {
+                i = n;
+            }
+        }
+    }
+
+    public static void sort(Show[] lista, int n) {
+        for (int i = 2; i <= n; i++){
+            construir(lista, i);
+        }
+
+        int i = n;
+        while (i > 1) {
+            Show tmp = lista[1];
+            lista[1] = lista[i];
+            lista[i] = tmp;
+            i--;
+            reconstruir(lista, i);
         }
     }
     

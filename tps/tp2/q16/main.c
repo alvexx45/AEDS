@@ -153,41 +153,8 @@ void ler(Show* show, const char* csv) {
     freeFields(campos, field_count);
 }
 
-Show cloneShow(const Show* original) {
-    Show clone;
-
-    // Copia os campos de string simples
-    clone.id = strdup(original->id);
-    clone.type = strdup(original->type);
-    clone.title = strdup(original->title);
-    clone.director = strdup(original->director);
-    clone.country = strdup(original->country);
-    clone.date = strdup(original->date);
-    clone.rating = strdup(original->rating);
-    clone.duration = strdup(original->duration);
-
-    // Copia o campo inteiro
-    clone.year = original->year;
-
-    // Copia o array cast
-    clone.cast_count = original->cast_count;
-    clone.cast = malloc(clone.cast_count * sizeof(char*));
-    for (int i = 0; i < clone.cast_count; i++) {
-        clone.cast[i] = strdup(original->cast[i]);
-    }
-
-    // Copia o array listed
-    clone.listed_count = original->listed_count;
-    clone.listed = malloc(clone.listed_count * sizeof(char*));
-    for (int i = 0; i < clone.listed_count; i++) {
-        clone.listed[i] = strdup(original->listed[i]);
-    }
-
-    return clone;
-}
-
 void imprimir(const Show* show) {
-    printf("=> %s ## %s ## %s ## %s ## [", show->id, show->title, show->type, show->director);
+    printf("=> %s ## %s ## %s ## %s ## [", show->id, show->type, show->title, show->director);
     for (int i = 0; i < show->cast_count; i++) {
         printf("%s", show->cast[i]);
         if (i < show->cast_count - 1) printf(", ");
@@ -220,7 +187,26 @@ void freeShow(Show* show) {
     free(show->listed);
 }
 
+void sort(Show lista[], int n) {
+    int k = 10;
+
+    if (k >= 10 || k > n) {
+        k = (n < 10) ? n : 10;
+    }
+
+    for (int i = 1; i < n; i++) {
+        Show tmp = lista[i];
+        int j = i-1;
+        while ((j >= 0) && (strcmp(lista[j].type, tmp.type) > 0 || (strcmp(lista[j].type, tmp.type) == 0 && strcmp(lista[j].title, tmp.title) > 0))) {
+            lista[j+1] = lista[j];
+            j--;                
+        }
+        lista[j+1] = tmp;
+    }
+}
+
 int main() {
+    // char path[] = "../disneyplus.csv";
     char path[] = "/tmp/disneyplus.csv";
     Show lista[1369];
     int i = 0;
@@ -244,7 +230,6 @@ int main() {
                 Show show;
                 ler(&show, line);
                 lista[i++] = show;
-                imprimir(&show);
                 freeFields(campos, field_count);
                 break;
             }
@@ -253,6 +238,15 @@ int main() {
         fclose(file);
 
         scanf("%s", lerId);
+    }
+
+    sort (lista, i);
+    for (int j = 0; j < 10; j++) {
+        imprimir(&lista[j]);
+    }
+
+    for (int j = 0; j < i; j++) {
+        freeShow(&lista[j]);
     }
 
     return 0;

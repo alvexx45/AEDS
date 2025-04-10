@@ -7,8 +7,8 @@ class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         
-        // String path = "/tmp/disneyplus.csv";
-        String path = "../disneyplus.csv";
+        String path = "/tmp/disneyplus.csv";
+        // String path = "../disneyplus.csv";
 
         Show[] lista = new Show[1369];
         int i = 0;
@@ -154,7 +154,7 @@ class Show {
 
     public void imprimir() {
         System.out.printf("=> %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ##\n",
-            id, type, title, director, Arrays.toString(cast), country,
+            id, title, type, director, Arrays.toString(cast), country,
             date == null ? "NaN" : DATE_FORMATTER.format(date),
             year == 0 ? "NaN" : String.valueOf(year),
             rating, duration, Arrays.toString(listed));
