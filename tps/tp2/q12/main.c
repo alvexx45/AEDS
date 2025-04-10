@@ -187,29 +187,23 @@ void freeShow(Show* show) {
     free(show->listed);
 }
 
-void insercao(Show lista[], int cor, int h, int n) {
-    for (int i = (h+cor); i < n; i+= h) {
-        Show tmp = lista[i];
-        int j = i-h;
-        while ((j >= 0) && (strcmp(lista[j].type, tmp.type) > 0 || (strcmp(lista[j].type, tmp.type) == 0 && strcmp(lista[j].title, tmp.title) > 0))) {
-            lista[j+h] = lista[j];
-            j -= h;                
-        }
-        lista[j+h] = tmp;
-    }
-}
-
 void sort(Show lista[], int n) {
-    int h = 1;
-    do {
-        h = (h*3) + 1;
-    } while (h < n);
-    do {
-        h /= 3;
-        for (int cor = 0; cor < h; cor++) {
-            insercao(lista, cor, h, n);
+    for (int i = 0; i < n-1; i++) {
+        bool trocado = false;
+
+        for (int j = 0; j < n-i-1; j++) {
+            if (strcmp(lista[j].date, lista[j + 1].date) > 0 || 
+            (strcmp(lista[j].date, lista[j + 1].date) == 0 && strcmp(lista[j].title, lista[j + 1].title) > 0)) {
+                Show tmp = lista[j];
+                lista[j] = lista[j+1];
+                lista[j+1] = tmp;
+
+                trocado = true;
+            }
         }
-    } while (h != 1);
+
+        if (!trocado) i = n-1;
+    }
 }
 
 int main() {
