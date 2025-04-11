@@ -1,14 +1,12 @@
 import java.io.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         
-        String path = "/tmp/disneyplus.csv";
-        // String path = "../disneyplus.csv";
+        // String path = "/tmp/disneyplus.csv";
+        String path = "../disneyplus.csv";
 
         Show[] lista = new Show[1369];
         int i = 0;
@@ -45,13 +43,10 @@ class Show {
     private String id;
     private String type;
     private String title;
-
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.ENGLISH);
-
     private String director;
     private String[] cast;
     private String country;
-    private LocalDate date;
+    private String date;
     private int year;
     private String rating;
     private String duration;
@@ -63,7 +58,7 @@ class Show {
     public String getDirector() { return director; }
     public String[] getCast() { return cast; }
     public String getCountry() { return country; }
-    public LocalDate getDate() { return date; }
+    public String getDate() { return date; }
     public int getYear() { return year; }
     public String getRating() { return rating; }
     public String getDuration() { return duration; }
@@ -75,13 +70,13 @@ class Show {
     public void setDirector(String director) { this.director = director; }
     public void setCast(String[] cast) { this.cast = cast; }
     public void setCountry(String country) { this.country = country; }
-    public void setDate(LocalDate date) { this.date = date; }
+    public void setDate(String date) { this.date = date; }
     public void setYear(int year) { this.year = year; }
     public void setRating(String rating) { this.rating = rating; }
     public void setDuration(String duration) { this.duration = duration; }
     public void setListed(String[] listed) { this.listed = listed; }
 
-    public Show(String id, String type, String title, String director, String[] cast, String country, LocalDate date, int year, String rating, String duration, String[] listed) {
+    public Show(String id, String type, String title, String director, String[] cast, String country, String date, int year, String rating, String duration, String[] listed) {
         setId(id);
         setType(type);
         setTitle(title);
@@ -122,31 +117,27 @@ class Show {
 
     public void ler(String csv) {
         String[] campos = splitCSV(csv);
-    
+
         if (campos.length >= 11) {
             setId(campos[0].isEmpty() ? "NaN" : campos[0]);
             setType(campos[1].isEmpty() ? "NaN" : campos[1]);
             setTitle(campos[2].isEmpty() ? "NaN" : campos[2]);
             setDirector(campos[3].replace("\"", "").isEmpty() ? "NaN" : campos[3].replace("\"", ""));
-    
+
             String castStr = campos[4].replace("\"", "");
             String[] castArray = castStr.isEmpty() ? new String[]{"NaN"} : castStr.split(", ");
             if (!castStr.isEmpty()) Arrays.sort(castArray);
             setCast(castArray);
-    
+
             setCountry(campos[5].replace("\"", "").isEmpty() ? "NaN" : campos[5].replace("\"", ""));
-    
-            String dateStr = campos[6].replace("\"", "");
-            try {
-                setDate(dateStr.isEmpty() ? null : LocalDate.parse(dateStr, DATE_FORMATTER));
-            } catch (Exception e) {
-                setDate(null);
-            }
-    
+
+            String dateStr = campos[6].replace("\"", "").trim();
+            setDate(dateStr.isEmpty() ? "NaN" : dateStr);
+
             setYear(campos[7].isEmpty() ? 0 : Integer.parseInt(campos[7]));
             setRating(campos[8].isEmpty() ? "NaN" : campos[8]);
             setDuration(campos[9].isEmpty() ? "NaN" : campos[9]);
-    
+
             String[] listedArray = campos[10].isEmpty() ? new String[]{"NaN"} : campos[10].split(", ");
             setListed(listedArray);
         }
@@ -155,8 +146,41 @@ class Show {
     public void imprimir() {
         System.out.printf("=> %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ##\n",
             id, title, type, director, Arrays.toString(cast), country,
-            date == null ? "NaN" : DATE_FORMATTER.format(date),
+            date, // Imprime a string diretamente
             year == 0 ? "NaN" : String.valueOf(year),
             rating, duration, Arrays.toString(listed));
+    }
+
+    public Show clone() {
+        Show clone = new Show();
+        clone.id = this.id != null ? new String(this.id) : null;
+        clone.type = this.type != null ? new String(this.type) : null;
+        clone.title = this.title != null ? new String(this.title) : null;
+        clone.director = this.director != null ? new String(this.director) : null;
+        clone.country = this.country != null ? new String(this.country) : null;
+        clone.date = this.date != null ? new String(this.date) : null;
+        clone.year = this.year;
+        clone.rating = this.rating != null ? new String(this.rating) : null;
+        clone.duration = this.duration != null ? new String(this.duration) : null;
+
+        if (this.cast != null) {
+            clone.cast = new String[this.cast.length];
+            for (int i = 0; i < this.cast.length; i++) {
+                clone.cast[i] = this.cast[i] != null ? new String(this.cast[i]) : null;
+            }
+        } else {
+            clone.cast = null;
+        }
+
+        if (this.listed != null) {
+            clone.listed = new String[this.listed.length];
+            for (int i = 0; i < this.listed.length; i++) {
+                clone.listed[i] = this.listed[i] != null ? new String(this.listed[i]) : null;
+            }
+        } else {
+            clone.listed = null;
+        }
+
+        return clone;
     }
 }

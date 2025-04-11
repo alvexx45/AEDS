@@ -154,7 +154,7 @@ void ler(Show* show, const char* csv) {
 }
 
 void imprimir(const Show* show) {
-    printf("=> %s ## %s ## %s ## %s ## [", show->id, show->type, show->title, show->director);
+    printf("=> %s ## %s ## %s ## %s ## [", show->id, show->title, show->type, show->director);
     for (int i = 0; i < show->cast_count; i++) {
         printf("%s", show->cast[i]);
         if (i < show->cast_count - 1) printf(", ");
