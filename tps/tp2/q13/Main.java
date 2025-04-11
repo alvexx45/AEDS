@@ -2,48 +2,46 @@ import java.io.*;
 import java.util.*;
 
 class Main {
-    public static void sort(Show[] lista, int n) {
-        if (n <= 1) return;
+    public static void intercalar(Show[] lista, int esq, int meio, int dir) {
+        int nEsq = meio - esq + 1;
+        int nDir = dir - meio;
     
-        int minYear = lista[0].getYear();
-        int maxYear = lista[0].getYear();
-        for (int i = 1; i < n; i++) {
-            int currentYear = lista[i].getYear();
-            if (currentYear < minYear) minYear = currentYear;
-            if (currentYear > maxYear) maxYear = currentYear;
+        Show[] listaEsq = new Show[nEsq];
+        Show[] listaDir = new Show[nDir];
+    
+        for (int i = 0; i < nEsq; i++) {
+            listaEsq[i] = lista[esq + i];
+        }
+        for (int j = 0; j < nDir; j++) {
+            listaDir[j] = lista[meio + 1 + j];
         }
     
-        int range = maxYear - minYear + 1;
+        int iEsq = 0, iDir = 0, k = esq;
     
-        int[] count = new int[range];
-        for (int i = 0; i < n; i++) {
-            count[lista[i].getYear() - minYear]++;
-        }
-    
-        for (int i = 1; i < range; i++) {
-            count[i] += count[i - 1];
-        }
-    
-        Show[] output = new Show[n];
-        for (int i = n - 1; i >= 0; i--) {
-            int yearIndex = lista[i].getYear() - minYear;
-            output[count[yearIndex] - 1] = lista[i];
-            count[yearIndex]--;
-        }
-    
-        System.arraycopy(output, 0, lista, 0, n);
-    
-        for (int i = 1; i < n; i++) {
-            if (lista[i].getYear() == lista[i - 1].getYear()) {
-                int j = i;
-                while (j > 0 && lista[j].getYear() == lista[j - 1].getYear() &&
-                       lista[j].getTitle().compareTo(lista[j - 1].getTitle()) < 0) {
-                    Show temp = lista[j];
-                    lista[j] = lista[j - 1];
-                    lista[j - 1] = temp;
-                    j--;
-                }
+        while (iEsq < nEsq && iDir < nDir) {
+            int cmpDuration = listaEsq[iEsq].getDuration().compareTo(listaDir[iDir].getDuration());
+            if (cmpDuration < 0 || (cmpDuration == 0 && listaEsq[iEsq].getTitle().compareTo(listaDir[iDir].getTitle()) < 0)) {
+                lista[k++] = listaEsq[iEsq++];
+            } else {
+                lista[k++] = listaDir[iDir++];
             }
+        }
+    
+        while (iEsq < nEsq) {
+            lista[k++] = listaEsq[iEsq++];
+        }
+    
+        while (iDir < nDir) {
+            lista[k++] = listaDir[iDir++];
+        }
+    }
+
+    public static void sort(Show[] lista, int esq, int dir) {
+        if (esq < dir) {
+            int meio = (esq + dir) / 2;
+            sort(lista, esq, meio);
+            sort(lista, meio+1, dir);
+            intercalar(lista, esq, meio, dir);
         }
     }
     
@@ -78,7 +76,7 @@ class Main {
             lerId = sc.nextLine();
         }
 
-        sort(lista, i);
+        sort(lista, 0, i-1);
         for (int j = 0; j < i; j++) {
             lista[j].imprimir();
         }
