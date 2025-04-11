@@ -3,7 +3,6 @@ import java.util.*;
 
 class Main {
     private static long[] parsedDates; // Armazena as datas convertidas para YYYYMMDD
-
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String path = "../disneyplus.csv"; // Ajuste o caminho conforme necessário
