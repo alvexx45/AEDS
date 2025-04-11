@@ -187,34 +187,82 @@ void freeShow(Show* show) {
     free(show->listed);
 }
 
-void selection(Show lista[], int i, int n) {
-    if (i >= n-1) return;
+void swap_shows(Show* a, Show* b) {
+    Show temp = *a;
+    *a = *b;
+    *b = temp;
+}
 
-    int menor = i;
-    for (int j = i+1; j < n; j++) {
-        if (strcmp(lista[j].title, lista[menor].title) < 0) {
-            menor = j;
+// Função para trocar dois valores long
+void swap_long(long* a, long* b) {
+    long temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// Função para obter o maior ano no array
+int getMaxYear(Show* lista, int n) {
+    int max = lista[0].year;
+    for (int i = 1; i < n; i++) {
+        if (lista[i].year > max) {
+            max = lista[i].year;
+        }
+    }
+    return max;
+}
+
+// Counting Sort para um dígito específico (exp = 1, 10, 100, ...)
+void countingSortByYear(Show* lista, int n, int exp) {
+    Show* output = malloc(n * sizeof(Show));
+    int count[10] = {0}; // Contagem para dígitos 0-9
+
+    // Contar ocorrências de cada dígito
+    for (int i = 0; i < n; i++) {
+        int digit = (lista[i].year / exp) % 10;
+        count[digit]++;
+    }
+
+    // Acumular as posições
+    for (int i = 1; i < 10; i++) {
+        count[i] += count[i - 1];
+    }
+
+    // Construir o array de saída (estável)
+    for (int i = n - 1; i >= 0; i--) {
+        int digit = (lista[i].year / exp) % 10;
+        output[count[digit] - 1] = lista[i];
+        count[digit]--;
+    }
+
+    // Copiar de volta para o array original
+    for (int i = 0; i < n; i++) {
+        lista[i] = output[i];
+    }
+
+    free(output);
+}
+
+// Radixsort para ordenar por 'year' (chave primária) e 'title' (desempate)
+void radixsort(Show* lista, int n) {
+    // Ordenar primeiro por título (desempate)
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (strcmp(lista[i].title, lista[j].title) > 0) {
+                swap_shows(&lista[i], &lista[j]);
+            }
         }
     }
 
-    if (menor != i) {
-        Show tmp = lista[i];
-        lista[i] = lista[menor];
-        lista[menor] = tmp;
+    // Ordenar por 'year' usando Radixsort
+    int max_year = getMaxYear(lista, n);
+    for (int exp = 1; max_year / exp > 0; exp *= 10) {
+        countingSortByYear(lista, n, exp);
     }
-
-    selection(lista, i+1, n);
-}
-
-void sort(Show lista[], int n) {
-    if (n <= 1) return;
-
-    selection(lista, 0, n);
 }
 
 int main() {
-    // char path[] = "../disneyplus.csv";
-    char path[] = "/tmp/disneyplus.csv";
+    char path[] = "../disneyplus.csv";
+    // char path[] = "/tmp/disneyplus.csv";
     
     Show lista[1369];
     int i = 0;
@@ -248,7 +296,7 @@ int main() {
         scanf("%s", lerId);
     }
 
-    sort (lista, i);
+    radixsort (lista, i);
     for (int j = 0; j < i; j++) {
         imprimir(&lista[j]);
     }
