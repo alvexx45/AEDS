@@ -30,8 +30,6 @@ typedef struct {
 long parse_date(const char* date_str);
 void swap_shows(Show* a, Show* b);
 void swap_long(long* a, long* b);
-int partition(Show* lista, long* parsed_dates, int low, int high);
-void quicksort(Show* lista, long* parsed_dates, int low, int high);
 
 // Função para converter a string da data em um valor numérico (YYYYMMDD)
 long parse_date(const char* date_str) {
@@ -79,36 +77,22 @@ void swap_long(long* a, long* b) {
     *b = temp;
 }
 
-// Função de partição para o Quicksort
-// Função de partição para o Quicksort (com desempate por título)
-int partition(Show* lista, long* parsed_dates, int low, int high) {
-    long pivot_date = parsed_dates[high];
-    char* pivot_title = lista[high].title;
-    int i = low - 1;
+void bubblesort(Show* lista, long* parsed_dates, int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            long current_date = parsed_dates[j];
+            long next_date = parsed_dates[j + 1];
+            char* current_title = lista[j].title;
+            char* next_title = lista[j + 1].title;
 
-    for (int j = low; j < high; j++) {
-        long current_date = parsed_dates[j];
-        char* current_title = lista[j].title;
+            bool precisaTrocar = (current_date > next_date) ||
+                                 (current_date == next_date && strcmp(current_title, next_title) > 0);
 
-        if (current_date < pivot_date || 
-            (current_date == pivot_date && strcmp(current_title, pivot_title) < 0)) {
-            i++;
-            swap_shows(&lista[i], &lista[j]);
-            swap_long(&parsed_dates[i], &parsed_dates[j]);
+            if (precisaTrocar) {
+                swap_shows(&lista[j], &lista[j + 1]);
+                swap_long(&parsed_dates[j], &parsed_dates[j + 1]);
+            }
         }
-    }
-
-    swap_shows(&lista[i + 1], &lista[high]);
-    swap_long(&parsed_dates[i + 1], &parsed_dates[high]);
-    return i + 1;
-}
-
-// Função Quicksort
-void quicksort(Show* lista, long* parsed_dates, int low, int high) {
-    if (low < high) {
-        int pivot = partition(lista, parsed_dates, low, high);
-        quicksort(lista, parsed_dates, low, pivot - 1);
-        quicksort(lista, parsed_dates, pivot + 1, high);
     }
 }
 
@@ -313,8 +297,7 @@ int main() {
         parsed_dates[j] = parse_date(lista[j].date);
     }
 
-    // Ordenação usando Quicksort
-    quicksort(lista, parsed_dates, 0, i - 1);
+    bubblesort(lista, parsed_dates, i);
     free(parsed_dates);
 
     for (int j = 0; j < i; j++) {
