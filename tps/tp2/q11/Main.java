@@ -3,16 +3,32 @@ import java.util.*;
 
 class Main {
     public static void sort(Show[] lista, int n) {
-        for (int i = 0; i < 10; i++) {
-            int menor = i;
-            for (int j = i+1; j < n; j++) {
-                if (lista[j].getTitle().compareTo(lista[menor].getTitle()) < 0) {
-                    menor = j;
-                }
+        int max = lista[0].getYear();
+        for (int i = 1; i < n; i++) {
+            if (lista[i].getYear() > max) {
+                max = lista[i].getYear();
             }
-            Show tmp = lista[i];
-            lista[i] = lista[menor];
-            lista[menor] = tmp;
+        }
+
+        int[] count = new int[max+1];
+
+        for (int i = 0; i < n; i++) {
+            count[lista[i].getYear()]++;
+        }
+
+        for (int i = 1; i <= max; i++) {
+            count[i] += count[i - 1];
+        }
+
+        Show[] output = new Show[n];
+
+        for (int i = n - 1; i >= 0; i--) {
+            output[count[lista[i].getYear()] - 1] = lista[i];
+            count[lista[i].getYear()]--;
+        }
+
+        for (int i = 0; i < n; i++) {
+            lista[i] = output[i];
         }
     }
     
@@ -48,7 +64,7 @@ class Main {
         }
 
         sort(lista, i);
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < i; j++) {
             lista[j].imprimir();
         }
 
