@@ -261,7 +261,7 @@ void radixsort(Show* lista, int n) {
 }
 
 int main() {
-    char path[] = "../disneyplus.csv";
+    char path[] = "/tmp/disneyplus.csv";
     // char path[] = "/tmp/disneyplus.csv";
     
     Show lista[1369];

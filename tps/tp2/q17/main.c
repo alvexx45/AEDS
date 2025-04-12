@@ -3,7 +3,6 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
-#include <limits.h>
 
 #define MAX_LINE_LENGTH 1024
 #define MAX_FIELDS 12
@@ -25,92 +24,6 @@ typedef struct {
     char** listed;
     int listed_count;
 } Show;
-
-// Protótipos das funções
-long parse_date(const char* date_str);
-void swap_shows(Show* a, Show* b);
-void swap_long(long* a, long* b);
-int partition(Show* lista, long* parsed_dates, int low, int high);
-void quicksort(Show* lista, long* parsed_dates, int low, int high);
-
-// Função para converter a string da data em um valor numérico (YYYYMMDD)
-long parse_date(const char* date_str) {
-    if (date_str == NULL || strcmp(date_str, "NaN") == 0) {
-        return LONG_MAX;
-    }
-
-    char month_str[20];
-    int day, year;
-    if (sscanf(date_str, "%19s %d, %d", month_str, &day, &year) != 3) {
-        return LONG_MAX;
-    }
-
-    const char* months[] = {"January", "February", "March", "April", "May", "June",
-                            "July", "August", "September", "October", "November", "December"};
-    int month = 0;
-    for (int i = 0; i < 12; i++) {
-        if (strcmp(month_str, months[i]) == 0) {
-            month = i + 1;
-            break;
-        }
-    }
-    if (month == 0) {
-        return LONG_MAX;
-    }
-
-    if (day < 1 || day > 31 || year < 0) {
-        return LONG_MAX;
-    }
-
-    return year * 10000L + month * 100L + day;
-}
-
-// Função para trocar dois Shows
-void swap_shows(Show* a, Show* b) {
-    Show temp = *a;
-    *a = *b;
-    *b = temp;
-}
-
-// Função para trocar dois valores long
-void swap_long(long* a, long* b) {
-    long temp = *a;
-    *a = *b;
-    *b = temp;
-}
-
-// Função de partição para o Quicksort
-// Função de partição para o Quicksort (com desempate por título)
-int partition(Show* lista, long* parsed_dates, int low, int high) {
-    long pivot_date = parsed_dates[high];
-    char* pivot_title = lista[high].title;
-    int i = low - 1;
-
-    for (int j = low; j < high; j++) {
-        long current_date = parsed_dates[j];
-        char* current_title = lista[j].title;
-
-        if (current_date < pivot_date || 
-            (current_date == pivot_date && strcmp(current_title, pivot_title) < 0)) {
-            i++;
-            swap_shows(&lista[i], &lista[j]);
-            swap_long(&parsed_dates[i], &parsed_dates[j]);
-        }
-    }
-
-    swap_shows(&lista[i + 1], &lista[high]);
-    swap_long(&parsed_dates[i + 1], &parsed_dates[high]);
-    return i + 1;
-}
-
-// Função Quicksort
-void quicksort(Show* lista, long* parsed_dates, int low, int high) {
-    if (low < high) {
-        int pivot = partition(lista, parsed_dates, low, high);
-        quicksort(lista, parsed_dates, low, pivot - 1);
-        quicksort(lista, parsed_dates, pivot + 1, high);
-    }
-}
 
 char** splitCSV(const char* line, int* field_count) {
     char** fields = malloc(MAX_FIELDS * sizeof(char*));
@@ -274,8 +187,65 @@ void freeShow(Show* show) {
     free(show->listed);
 }
 
+void swap_shows(Show* a, Show* b) {
+    Show temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void swap_long(long* a, long* b) {
+    long temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int compare(Show a, Show b) {
+    int cmp = strcmp(a.director, b.director);
+    if (cmp != 0) return cmp;
+    return strcmp(a.title, b.title);
+}
+
+void heapify(Show* lista, int n, int i) {
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (left < n) {
+        int cmp = strcmp(lista[left].director, lista[largest].director);
+        if (cmp > 0 || (cmp == 0 && strcmp(lista[left].title, lista[largest].title) > 0)) {
+            largest = left;
+        }
+    }
+
+    if (right < n) {
+        int cmp = strcmp(lista[right].director, lista[largest].director);
+        if (cmp > 0 || (cmp == 0 && strcmp(lista[right].title, lista[largest].title) > 0)) {
+            largest = right;
+        }
+    }
+
+    if (largest != i) {
+        swap_shows(&lista[i], &lista[largest]);
+        heapify(lista, n, largest);
+    }
+}
+
+void heapsort(Show* lista, int n) {
+    for (int i = n/2-1; i >= 0; i--) {
+        heapify(lista, n, i);
+    }
+
+    for (int i = n-1; i > 0; i--) {
+        swap_shows(&lista[0], &lista[i]);
+        
+        heapify(lista, i, 0);
+    }
+}
+
 int main() {
+    // char path[] = "../disneyplus.csv";
     char path[] = "/tmp/disneyplus.csv";
+    
     Show lista[1369];
     int i = 0;
 
@@ -304,20 +274,12 @@ int main() {
             freeFields(campos, field_count);
         }
         fclose(file);
+
         scanf("%s", lerId);
     }
 
-    // Pré-processamento: converter datas para valores numéricos
-    long* parsed_dates = malloc(i * sizeof(long));
-    for (int j = 0; j < i; j++) {
-        parsed_dates[j] = parse_date(lista[j].date);
-    }
-
-    // Ordenação usando Quicksort
-    quicksort(lista, parsed_dates, 0, i - 1);
-    free(parsed_dates);
-
-    for (int j = 0; j < i; j++) {
+    heapsort(lista, i);
+    for (int j = 0; j < 10; j++) {
         imprimir(&lista[j]);
     }
 
