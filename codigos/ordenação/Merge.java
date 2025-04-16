@@ -35,3 +35,6 @@ class Merge {
         }   
     }
 }
+
+// n logn em todos os casos
+// estável
