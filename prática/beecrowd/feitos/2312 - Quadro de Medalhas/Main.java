@@ -1,24 +1,32 @@
 import java.util.Scanner;
 
 class Main {
-    public static void sort(Pais p[], int n) {
-        for (int i = 0; i < n-1; i++) {
-            int maior = i;
-            for (int j = i+1; j < n; j++) {
-                if(p[j].ouro > p[maior].ouro ||
-                (p[j].ouro == p[maior].ouro && p[j].prata > p[maior].prata) ||
-                (p[j].prata == p[maior].prata && p[j].bronze > p[maior].bronze) ||
-                (p[j].bronze == p[maior].bronze && p[j].nome.compareTo(p[maior].nome) < 0)){
-                    maior = j;
-                }
-            }
-            
-            Pais tmp = p[i];
-            p[i] = p[maior];
-            p[maior] = tmp;
-        }
+    public static int compare(Pais a, Pais b) {
+        if (a.ouro != b.ouro) return b.ouro - a.ouro;
+        if (a.prata != b.prata) return b.prata - a.prata;
+        if (a.bronze != b.bronze) return b.bronze - a.bronze;
+        return a.nome.compareTo(b.nome);
     }
 
+    public static void quicksort(Pais p[], int esq, int dir) {
+        int i = esq, j = dir;
+        Pais pivo = p[(esq+dir)/2];
+
+        while (i <= j) {
+            while (compare(p[i], pivo) < 0) i++;
+            while (compare(p[j], pivo) > 0) j--;
+
+            if (i <= j) {
+                Pais tmp = p[i];
+                p[i] = p[j];
+                p[j] = tmp;
+                i++; j--;
+            }
+
+            if (esq < j) quicksort(p, esq, j);
+            if (i < dir) quicksort(p, i, dir);
+        }
+    }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
@@ -35,7 +43,7 @@ class Main {
 
             p[i] = new Pais(nome, ouro, prata, bronze);
         }
-        sort(p, n);
+        quicksort(p, 0, n-1);
 
         for (int i = 0; i < n; i++) {
             System.out.printf("%s %d %d %d\n", p[i].nome, p[i].ouro, p[i].prata, p[i].bronze);
