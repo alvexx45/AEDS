@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 class Merge {
     public static void mergesort(int[] array, int esq, int dir) {
         if (esq < dir) {
@@ -11,21 +9,29 @@ class Merge {
     }
 
     private static void intercalar(int[] array, int esq, int meio, int dir) {
-        // definir tamanho dos subarrays
-        int sizeEsq = (meio+1) - esq;
-        int sizeDir = dir-meio;
+        int n1 = meio-esq+1;
+        int n2 = dir-meio;
+        int i, j, k;
 
-        int[] arrayEsq = new int[sizeEsq+1];
-        int[] arrayDir = new int[sizeDir+1];
+        int[] a1 = new int[n1+1];
+        int[] a2 = new int[n2+1];
 
-        // sentinela
-        arrayEsq[sizeEsq] = arrayDir[sizeDir] = 0x7FFFFFFF;
+        for (i = 0; i < n1; i++) {
+            a1[i] = array[esq+i];
+        }
 
-        
-    }
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        for (j = 0; j < n2; j++) {
+            a2[j] = array[meio+j+1];
+        }
 
-        sc.close();
+        a1[i] = a2[j] = 0x7FFFFFFF;
+
+        for (i = j = 0, k = esq; k <= dir; k++) {
+            if (a1[i] <= a2[j]) {
+                array[k] = a1[i++];
+            } else {
+                array[k] = a2[j++];
+            }
+        }   
     }
 }
