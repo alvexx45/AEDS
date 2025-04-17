@@ -7,12 +7,18 @@ class Fila {
         fila.inserir(5);
         fila.inserir(8);
         fila.mostrar();
+        System.out.println("Maior: " + fila.maior());
+        System.out.println("Terceiro: " + fila.terceiro());
+        System.out.println("Soma: " + fila.soma());
+        fila.inverter();
+        fila.mostrar();
 
         fila.remover();
         fila.remover();
         // fila.removerFisicamente();
         // fila.removerFisicamente();
         fila.mostrar();
+        System.out.println("Terceiro: " + fila.terceiro());
     }
 }
 
@@ -58,9 +64,57 @@ class CriarFila {
     }
 
     void mostrar() {
-        for (Celula i = primeiro.prox; i != ultimo.prox; i = i.prox) {
+        for (Celula i = primeiro.prox; i != null; i = i.prox) {
             System.out.print(i.elemento + " ");
         }
         System.out.println();
+    }
+
+    int maior() {
+        if (primeiro == ultimo) return 0;
+
+        int res = 0;
+        for (Celula i = primeiro.prox; i != null; i = i.prox) {
+            if (i.elemento > res) {
+                res = i.elemento;
+            }
+        }
+
+        return res;
+    }
+
+    int terceiro() {
+        if (primeiro == ultimo) return 0;
+
+        int res = 0;
+
+        if (primeiro.prox.prox.prox != null) {
+            res = primeiro.prox.prox.prox.elemento;
+        }
+
+        return res;
+    }
+
+    int soma() {
+        if (primeiro == ultimo) return 0;
+
+        int res = 0;
+        for (Celula i = primeiro.prox; i != null; i = i.prox) {
+            res += i.elemento;
+        }
+
+        return res;
+    }
+
+    void inverter() {
+        CriarPilha pilha = new CriarPilha();
+
+        while (primeiro != ultimo) {
+            pilha.inserir(remover());
+        }
+
+        while (pilha.topo != null) {
+            inserir(pilha.remover());
+        }
     }
 }
