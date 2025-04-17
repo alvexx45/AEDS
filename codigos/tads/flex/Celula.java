@@ -1,4 +1,4 @@
-class Celula {
+public class Celula {
     int elemento;
     Celula prox;
 
