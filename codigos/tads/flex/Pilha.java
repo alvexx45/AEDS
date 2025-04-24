@@ -7,12 +7,15 @@ class Pilha {
         pilha.inserir(12);
         pilha.inserir(3);
         pilha.inserir(2);
+        pilha.inserir(2);
+        pilha.inserir(7);
         // pilha.mostrar();
         pilha.mostrarRec(pilha.topo);
         System.out.println();
         // pilha.mostrarInv();
 
-        pilha.removerPares();
+        // pilha.removerPares();
+        pilha.removerParesComAux();
         pilha.mostrar();
         //pilha.mostrarRecInv(pilha.topo);
         //System.out.println();
@@ -52,6 +55,7 @@ class CriarPilha {
         return elemento;
     }
 
+    // sem pilha auxiliar
     void removerPares() {
         Celula ant = null;
 
@@ -65,6 +69,22 @@ class CriarPilha {
             } else {
                 ant = i;
             }
+        }
+    }
+
+    // usando pilha auxiliar
+    void removerParesComAux() {
+        CriarPilha aux = new CriarPilha();
+
+        while (topo != null) {
+            int elemento = remover();
+            if (elemento % 2 != 0) {
+                aux.inserir(elemento);
+            }
+        }
+
+        while (aux.topo != null) {
+            inserir(aux.remover());
         }
     }
 
