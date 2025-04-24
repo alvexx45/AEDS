@@ -14,7 +14,7 @@ class Q3 {
         CelulaDupla res = c3.intercalarReverso(l1.primeiro, l2.primeiro);
 
         ListaDupla l3 = new ListaDupla();
-        l3.primeiro.prox = res.prox;
+        l3.primeiro = res;
         l3.mostrar();
     }
 }
@@ -33,15 +33,9 @@ class CelulaDupla {
     CelulaDupla intercalarReverso(CelulaDupla c1, CelulaDupla c2) {
         ListaDupla l3 = new ListaDupla();
 
-        CelulaDupla u1 = c1;
-        while (u1.prox != null) {
-            u1 = u1.prox;
-        }
-
-        CelulaDupla u2 = c2;
-        while (u2.prox != null) {
-            u2 = u2.prox;
-        }
+        CelulaDupla u1, u2;
+        for (u1 = c1; u1.prox != null; u1 = u1.prox);
+        for (u2 = c2; u2.prox != null; u2 = u2.prox);
 
         while (u1 != c1 || u2 != c2) {
             if (u1 != c1) {
