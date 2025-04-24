@@ -6,10 +6,14 @@ class Pilha {
         pilha.inserir(5);
         pilha.inserir(12);
         pilha.inserir(3);
+        pilha.inserir(2);
         // pilha.mostrar();
         pilha.mostrarRec(pilha.topo);
         System.out.println();
-        pilha.mostrarInv();
+        // pilha.mostrarInv();
+
+        pilha.removerPares();
+        pilha.mostrar();
         //pilha.mostrarRecInv(pilha.topo);
         //System.out.println();
         // System.out.println(pilha.soma());
@@ -46,6 +50,22 @@ class CriarPilha {
         tmp = null;
 
         return elemento;
+    }
+
+    void removerPares() {
+        Celula ant = null;
+
+        for (Celula i = topo; i != null; i = i.prox) {
+            if (i.elemento % 2 == 0) {
+                if (ant == null) {
+                    topo = i.prox; // remove do topo
+                } else {
+                    ant.prox = i.prox;
+                }
+            } else {
+                ant = i;
+            }
+        }
     }
 
     void mostrar() {
