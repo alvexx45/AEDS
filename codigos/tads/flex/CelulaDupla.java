@@ -1,6 +1,6 @@
 public class CelulaDupla {
     int elemento;
-    Celula ant, prox;
+    CelulaDupla ant, prox;
 
     public CelulaDupla() {this(0); }
 
