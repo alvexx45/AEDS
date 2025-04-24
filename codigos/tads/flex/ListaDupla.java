@@ -1,5 +1,19 @@
 class ListaDupla {
-    
+    public static void main(String[] args) {
+        CriarListaDupla lista = new CriarListaDupla();
+
+        lista.inserirFim(5);
+        lista.inserirFim(10);
+        lista.inserirInicio(15);
+        lista.inserirFim(20);
+        lista.inserirInicio(25);
+        lista.mostrar();
+
+        lista.removerFim();
+        lista.removerFim();
+        lista.removerInicio();
+        lista.mostrar();
+    }
 }
 
 class CriarListaDupla {
@@ -54,5 +68,12 @@ class CriarListaDupla {
         ultimo.prox = null;
 
         return resp;
+    }
+
+    void mostrar() {
+        for (CelulaDupla i = primeiro.prox; i != null; i = i.prox) {
+            System.out.print(i.elemento + " ");
+        }
+        System.out.println();
     }
 }
