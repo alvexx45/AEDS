@@ -34,21 +34,22 @@ class CelulaDupla {
         ListaDupla l3 = new ListaDupla();
 
         CelulaDupla u1, u2;
+        // u1, u2 recebem c1, c2 (cabeças) e caminham até a ultima pos
         for (u1 = c1; u1.prox != null; u1 = u1.prox);
         for (u2 = c2; u2.prox != null; u2 = u2.prox);
 
         while (u1 != c1 || u2 != c2) {
             if (u1 != c1) {
                 l3.inserirFim(u1.elemento);
-                u1 = u1.ant;
+                u1 = u1.ant; // ultimo vira o anterior
             }
             if (u2 != c2) {
                 l3.inserirFim(u2.elemento);
-                u2 = u2.ant;
+                u2 = u2.ant; // ultimo vira o anterior
             }
         }
 
-        return l3.primeiro;
+        return l3.primeiro; // cabeça de l3
     }
 }
 
