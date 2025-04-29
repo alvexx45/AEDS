@@ -37,7 +37,7 @@ class Main {
             if (lista[i].getYear() == lista[i - 1].getYear()) {
                 int j = i;
                 while (j > 0 && lista[j].getYear() == lista[j - 1].getYear() &&
-                       lista[j].getTitle().compareTo(lista[j - 1].getTitle()) < 0) {
+                       lista[j].getTitle().toLowerCase().compareTo(lista[j - 1].getTitle().toLowerCase()) < 0) {
                     Show temp = lista[j];
                     lista[j] = lista[j - 1];
                     lista[j - 1] = temp;

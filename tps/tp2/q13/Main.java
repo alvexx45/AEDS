@@ -20,7 +20,7 @@ class Main {
     
         while (iEsq < nEsq && iDir < nDir) {
             int cmpDuration = listaEsq[iEsq].getDuration().compareTo(listaDir[iDir].getDuration());
-            if (cmpDuration < 0 || (cmpDuration == 0 && listaEsq[iEsq].getTitle().compareTo(listaDir[iDir].getTitle()) < 0)) {
+            if (cmpDuration < 0 || (cmpDuration == 0 && listaEsq[iEsq].getTitle().toLowerCase().compareTo(listaDir[iDir].getTitle().toLowerCase()) < 0)) {
                 lista[k++] = listaEsq[iEsq++];
             } else {
                 lista[k++] = listaDir[iDir++];

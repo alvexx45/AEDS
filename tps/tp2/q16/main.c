@@ -187,6 +187,16 @@ void freeShow(Show* show) {
     free(show->listed);
 }
 
+int strcasecmp(const char *s1, const char *s2) {
+    while (*s1 && *s2) {
+        int diff = tolower(*s1) - tolower(*s2);
+        if (diff != 0) return diff;
+        s1++;
+        s2++;
+    }
+    return tolower(*s1) - tolower(*s2);
+}
+
 void sort(Show lista[], int n) {
     int k = 10;
 
@@ -197,7 +207,7 @@ void sort(Show lista[], int n) {
     for (int i = 1; i < n; i++) {
         Show tmp = lista[i];
         int j = i-1;
-        while ((j >= 0) && (strcmp(lista[j].type, tmp.type) > 0 || (strcmp(lista[j].type, tmp.type) == 0 && strcmp(lista[j].title, tmp.title) > 0))) {
+        while ((j >= 0) && (strcmp(lista[j].type, tmp.type) > 0 || (strcmp(lista[j].type, tmp.type) == 0 && strcasecmp(lista[j].title, tmp.title) < 0))) {
             lista[j+1] = lista[j];
             j--;                
         }

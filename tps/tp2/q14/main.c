@@ -242,12 +242,22 @@ void countingSortByYear(Show* lista, int n, int exp) {
     free(output);
 }
 
+int strcasecmp(const char *s1, const char *s2) {
+    while (*s1 && *s2) {
+        int diff = tolower(*s1) - tolower(*s2);
+        if (diff != 0) return diff;
+        s1++;
+        s2++;
+    }
+    return tolower(*s1) - tolower(*s2);
+}
+
 // Radixsort para ordenar por 'year' (chave primária) e 'title' (desempate)
 void radixsort(Show* lista, int n) {
     // Ordenar primeiro por título (desempate)
     for (int i = 0; i < n; i++) {
         for (int j = i + 1; j < n; j++) {
-            if (strcmp(lista[i].title, lista[j].title) > 0) {
+            if (strcasecmp(lista[i].title, lista[j].title) > 0) {
                 swap_shows(&lista[i], &lista[j]);
             }
         }
