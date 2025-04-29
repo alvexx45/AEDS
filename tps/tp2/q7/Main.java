@@ -8,7 +8,7 @@ class Main {
         for (int i = 1; i < n; i++) {
             Show tmp = lista[i];
             int j = i-1;
-            while ((j >= 0) && (lista[j].getType().compareTo(tmp.getType()) > 0 || (lista[j].getType().compareTo(tmp.getType()) == 0 && lista[j].getTitle().compareTo(tmp.getTitle()) > 0))) {
+            while ((j >= 0) && (lista[j].getType().compareTo(tmp.getType()) > 0 || (lista[j].getType().compareTo(tmp.getType()) == 0 && lista[j].getTitle().toLowerCase().compareTo(tmp.getTitle().toLowerCase()) > 0))) {
                 lista[j+1] = lista[j];
                 j--;                
             }
