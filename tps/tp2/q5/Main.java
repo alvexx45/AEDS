@@ -6,7 +6,7 @@ class Main {
         for (int i = 0; i < n-1; i++) {
             int menor = i;
             for (int j = i+1; j < n; j++) {
-                if (lista[j].getTitle().compareTo(lista[menor].getTitle()) < 0) {
+                if (lista[j].getTitle().toLowerCase().compareTo(lista[menor].getTitle().toLowerCase()) < 0) {
                     menor = j;
                 }
             }

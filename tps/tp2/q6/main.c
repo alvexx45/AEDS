@@ -187,12 +187,22 @@ void freeShow(Show* show) {
     free(show->listed);
 }
 
+int strcasecmp(const char *s1, const char *s2) {
+    while (*s1 && *s2) {
+        int diff = tolower(*s1) - tolower(*s2);
+        if (diff != 0) return diff;
+        s1++;
+        s2++;
+    }
+    return tolower(*s1) - tolower(*s2);
+}
+
 void selection(Show lista[], int i, int n) {
     if (i >= n-1) return;
 
     int menor = i;
     for (int j = i+1; j < n; j++) {
-        if (strcmp(lista[j].title, lista[menor].title) < 0) {
+        if (strcasecmp(lista[j].title, lista[menor].title) < 0) {
             menor = j;
         }
     }
