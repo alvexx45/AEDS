@@ -187,11 +187,21 @@ void freeShow(Show* show) {
     free(show->listed);
 }
 
+int strcasecmp(const char *s1, const char *s2) {
+    while (*s1 && *s2) {
+        int diff = tolower(*s1) - tolower(*s2);
+        if (diff != 0) return diff;
+        s1++;
+        s2++;
+    }
+    return tolower(*s1) - tolower(*s2);
+}
+
 void insercao(Show lista[], int cor, int h, int n) {
     for (int i = (h+cor); i < n; i+= h) {
         Show tmp = lista[i];
         int j = i-h;
-        while ((j >= 0) && (strcmp(lista[j].type, tmp.type) > 0 || (strcmp(lista[j].type, tmp.type) == 0 && strcmp(lista[j].title, tmp.title) > 0))) {
+        while ((j >= 0) && (strcmp(lista[j].type, tmp.type) > 0 || (strcmp(lista[j].type, tmp.type) == 0 && strcasecmp(lista[j].title, tmp.title) > 0))) {
             lista[j+h] = lista[j];
             j -= h;                
         }
