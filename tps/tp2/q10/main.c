@@ -79,8 +79,16 @@ void swap_long(long* a, long* b) {
     *b = temp;
 }
 
-// Função de partição para o Quicksort
-// Função de partição para o Quicksort (com desempate por título)
+int strcasecmp(const char *s1, const char *s2) {
+    while (*s1 && *s2) {
+        int diff = tolower((unsigned char)*s1) - tolower((unsigned char)*s2);
+        if (diff != 0) return diff;
+        s1++;
+        s2++;
+    }
+    return tolower((unsigned char)*s1) - tolower((unsigned char)*s2);
+}
+
 int partition(Show* lista, long* parsed_dates, int low, int high) {
     long pivot_date = parsed_dates[high];
     char* pivot_title = lista[high].title;
@@ -91,7 +99,7 @@ int partition(Show* lista, long* parsed_dates, int low, int high) {
         char* current_title = lista[j].title;
 
         if (current_date < pivot_date || 
-            (current_date == pivot_date && strcmp(current_title, pivot_title) < 0)) {
+            (current_date == pivot_date && strcasecmp(current_title, pivot_title) < 0)) {
             i++;
             swap_shows(&lista[i], &lista[j]);
             swap_long(&parsed_dates[i], &parsed_dates[j]);
@@ -103,7 +111,6 @@ int partition(Show* lista, long* parsed_dates, int low, int high) {
     return i + 1;
 }
 
-// Função Quicksort
 void quicksort(Show* lista, long* parsed_dates, int low, int high) {
     if (low < high) {
         int pivot = partition(lista, parsed_dates, low, high);
