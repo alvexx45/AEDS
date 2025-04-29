@@ -9,14 +9,14 @@ class Main {
 
         if (left < n) {
             int cmp = lista[left].getDirector().compareTo(lista[largest].getDirector());
-            if (cmp > 0 || (cmp == 0 && lista[left].getTitle().compareTo(lista[largest].getTitle()) > 0)) {
+            if (cmp > 0 || (cmp == 0 && lista[left].getTitle().toLowerCase().compareTo(lista[largest].getTitle().toLowerCase()) > 0)) {
                 largest = left;
             }
         }
 
         if (right < n) {
             int cmp = lista[right].getDirector().compareTo(lista[largest].getDirector());
-            if (cmp > 0 || (cmp == 0 && lista[right].getTitle().compareTo(lista[largest].getTitle()) > 0)) {
+            if (cmp > 0 || (cmp == 0 && lista[right].getTitle().toLowerCase().compareTo(lista[largest].getTitle().toLowerCase()) > 0)) {
                 largest = right;
             }
         }
