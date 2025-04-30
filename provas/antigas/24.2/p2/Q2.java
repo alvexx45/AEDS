@@ -1,7 +1,3 @@
-class Q2 {
-}
-
-
 class CelulaMat {
     int elemento;
     CelulaMat inf, sup, esq, dir;
