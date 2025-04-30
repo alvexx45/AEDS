@@ -207,7 +207,7 @@ void sort(Show lista[], int n) {
     for (int i = 1; i < n; i++) {
         Show tmp = lista[i];
         int j = i-1;
-        while ((j >= 0) && (strcmp(lista[j].type, tmp.type) > 0 || (strcmp(lista[j].type, tmp.type) == 0 && strcasecmp(lista[j].title, tmp.title) < 0))) {
+        while ((j >= 0) && (strcmp(lista[j].type, tmp.type) > 0 || (strcmp(lista[j].type, tmp.type) == 0 && strcasecmp(lista[j].title, tmp.title) > 0))) {
             lista[j+1] = lista[j];
             j--;                
         }
