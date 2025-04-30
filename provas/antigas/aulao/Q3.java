@@ -25,10 +25,10 @@ class Matriz {
     }
 
     void remover(CelulaMat i) {
-        CelulaLista tmp = new CelulaLista();
+        CelulaLista cabeca = new CelulaLista();
 
-        tmp.prox = i.inicio;
-        CelulaLista j = tmp;
+        cabeca.prox = i.inicio;
+        CelulaLista j = cabeca;
 
         while (j.prox != null) {
             if (j.prox.elemento % 2 != 0) {
@@ -37,6 +37,6 @@ class Matriz {
                 j = j.prox;
             }
         }
-        i.inicio = tmp.prox;
+        i.inicio = cabeca.prox;
     }
 }
