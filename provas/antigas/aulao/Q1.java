@@ -1,6 +1,6 @@
 class Lista {
     CelulaLista inicio, fim;
-
+    
     CelulaLista maiorPilha() {
         CelulaLista resp = inicio;
         int maior = 0;
@@ -8,7 +8,7 @@ class Lista {
         if (inicio == fim) return null;
 
         for (CelulaLista i = inicio; i != null; i = i.prox) {
-            int j = tamanhoPilha(i);
+            int j = tamanho(i);
 
             if (j > maior) {
                 resp = i;
@@ -19,19 +19,18 @@ class Lista {
         return resp;
     }
 
-    int tamanhoPilha(CelulaLista i) {
-        int cont = 0;
+    int tamanho(CelulaLista cel) {
+        int size = 0;
 
-        for (CelulaPilha j = i.topo; j != null; j = j.prox) cont++;
+        for (CelulaPilha i = cel.topo; i != null; i = i.prox) size++;
 
-        return cont;
+        return size;
     }
 }
 
 class CelulaLista {
     CelulaPilha topo;
     CelulaLista prox;
-
 }
 
 class CelulaPilha {
