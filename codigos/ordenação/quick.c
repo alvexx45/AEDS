@@ -20,16 +20,16 @@ void quicksort(int array[], int esq, int dir) {
 }
 
 int main() {
-    int array[8] = {0, 1, 5, 3, 15, 16, 9, 10};
+    int array[16] = {0, 1, 12, 9, 88, 13, 40, 2, 15, 75, 5, 3, 15, 16, 9, 10};
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 16; i++) {
         printf("%d ", array[i]);
     }
     printf("\n");
 
-    quicksort(array, 0, 8-1);
+    quicksort(array, 0, 16-1);
     
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 16; i++) {
         printf("%d ", array[i]);
     }
     printf("\n");
