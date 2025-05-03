@@ -63,4 +63,17 @@ class CriarLista {
         }
         System.out.println();
     }
+
+    void selection() {
+        for (Celula i = primeiro; i.prox != null; i = i.prox) {
+            Celula menor = i;
+            for (Celula j = i.prox; j != null; j = j.prox) {
+                if (j.elemento < menor.elemento) menor = j;
+            }
+
+            int tmp = i.elemento;
+            i.elemento = menor.elemento;
+            menor.elemento = tmp;
+        }
+    }
 }

@@ -9,7 +9,8 @@ class ListaDupla {
         lista.inserirFim(5);
         lista.mostrar();
         
-        lista.quicksort(lista.primeiro.prox, lista.ultimo);
+        lista.selection();
+        // lista.quicksort(lista.primeiro.prox, lista.ultimo);
         lista.mostrar();
 
         lista.removerFim();
@@ -116,5 +117,16 @@ class CriarListaDupla {
         int tmp = a.elemento;
         a.elemento = b.elemento;
         b.elemento = tmp;
+    }
+
+    void selection() {
+        for (CelulaDupla i = primeiro; i.prox != null; i = i.prox) {
+            CelulaDupla menor = i;
+            for (CelulaDupla j = i.prox; j != null; j = j.prox) {
+                if (j.elemento < menor.elemento) menor = j;
+            }
+
+            swap(i, menor);
+        }
     }
 }
