@@ -13,7 +13,7 @@ class CriarMatriz {
             return;
         } else if (colunas == 1) {
             inicio = null;
-            linhas--;
+            colunas--;
         } else {
             CelulaMat i;
             for (i = inicio; i.dir != null; i = i.dir);
