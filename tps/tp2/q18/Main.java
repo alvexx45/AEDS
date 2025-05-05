@@ -1,308 +1,482 @@
-import java.io.*;
-import java.util.*;
+// package ex18;
 
-class Main {
-    private static long[] parsedDates; // Armazena as datas convertidas para YYYYMMDD
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        String path = "../disneyplus.csv"; // Ajuste o caminho conforme necessário
-        Show[] lista = new Show[1369];
-        int i = 0;
-
-        String lerId = sc.nextLine();
-        while (!lerId.equals("FIM")) {
-            try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-                br.readLine(); // Ignora o cabeçalho
-                String line;
-                while ((line = br.readLine()) != null) {
-                    String[] campos = Show.splitCSV(line);
-                    if (campos.length > 0 && campos[0].equals(lerId)) {
-                        Show show = new Show();
-                        show.ler(line);
-                        lista[i++] = show;
-                        break;
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            lerId = sc.nextLine();
-        }
-
-        parsedDates = new long[i];
-        for (int j = 0; j < i; j++) {
-            parsedDates[j] = parseDate(lista[j].getDate());
-        }
-
-        partialQuickSort(lista, 0, i - 1, 10);
-
-        for (int j = 0; j < 10; j++) {
-            lista[j].imprimir();
-        }
-
-        sc.close();
-    }
-
-    private static long parseDate(String dateStr) {
-        if (dateStr == null || dateStr.equals("NaN")) {
-            return Long.MAX_VALUE; // Data inválida tratada como valor alto
-        }
-
-        String[] parts = dateStr.split(", ");
-        if (parts.length != 2) return Long.MAX_VALUE;
-
-        String yearStr = parts[1].trim();
-        String[] monthDay = parts[0].trim().split(" ");
-        if (monthDay.length != 2) return Long.MAX_VALUE;
-
-        String monthStr = monthDay[0];
-        String dayStr = monthDay[1];
-
-        try {
-            int year = Integer.parseInt(yearStr);
-            int day = Integer.parseInt(dayStr);
-            int month;
-            switch (monthStr.toLowerCase()) {
-                case "january":
-                    month = 1;
-                    break;
-                case "february":
-                    month = 2;
-                    break;
-                case "march":
-                    month = 3;
-                    break;
-                case "april":
-                    month = 4;
-                    break;
-                case "may":
-                    month = 5;
-                    break;
-                case "june":
-                    month = 6;
-                    break;
-                case "july":
-                    month = 7;
-                    break;
-                case "august":
-                    month = 8;
-                    break;
-                case "september":
-                    month = 9;
-                    break;
-                case "october":
-                    month = 10;
-                    break;
-                case "november":
-                    month = 11;
-                    break;
-                case "december":
-                    month = 12;
-                    break;
-                default:
-                    month = 13; // Mês inválido
-                    break;
-            }
-
-            return year * 10000L + month * 100L + day;
-        } catch (NumberFormatException e) {
-            return Long.MAX_VALUE;
-        }
-    }
-
-    private static void partialQuickSort(Show[] arr, int left, int right, int k) {
-        if (left < right) {
-            int pivot = partition(arr, left, right);
-            partialQuickSort(arr, left, pivot - 1, k);
-            if (pivot < k - 1) {
-                partialQuickSort(arr, pivot + 1, right, k);
-            }
-        }
-    }
-
-    private static int partition(Show[] arr, int left, int right) {
-        long pivotDate = parsedDates[right];
-        String pivotTitle = arr[right].getTitle();
-        int i = left - 1;
-
-        for (int j = left; j < right; j++) {
-            if (compare(arr[j], parsedDates[j], pivotDate, pivotTitle) < 0) {
-                i++;
-                swap(arr, i, j);
-                swapParsedDates(i, j);
-            }
-        }
-
-        swap(arr, i + 1, right);
-        swapParsedDates(i + 1, right);
-        return i + 1;
-    }
-
-    private static int compare(Show show, long currentDate, long pivotDate, String pivotTitle) {
-        if (currentDate < pivotDate) {
-            return -1;
-        } else if (currentDate > pivotDate) {
-            return 1;
-        } else {
-            return show.getTitle().compareTo(pivotTitle);
-        }
-    }
-
-    private static void swap(Show[] arr, int i, int j) {
-        Show temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-    }
-
-    private static void swapParsedDates(int i, int j) {
-        long temp = parsedDates[i];
-        parsedDates[i] = parsedDates[j];
-        parsedDates[j] = temp;
-    }
-}
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
 class Show {
-    private String id;
-    private String type;
-    private String title;
-    private String director;
-    private String[] cast;
-    private String country;
-    private String date;
-    private int year;
-    private String rating;
-    private String duration;
-    private String[] listed;
+	private String show_id;
+	private String type;
+	private String title;
+	private String director;
+	private String[] cast;
+	private String country;
+	private LocalDate date_added;
+	private Integer release_year;
+	private String rating;
+	private String duration;
+	private String[] listed_in;
 
-    public String getId() { return id; } 
-    public String getType() { return type; }
-    public String getTitle() { return title; }
-    public String getDirector() { return director; }
-    public String[] getCast() { return cast; }
-    public String getCountry() { return country; }
-    public String getDate() { return date; }
-    public int getYear() { return year; }
-    public String getRating() { return rating; }
-    public String getDuration() { return duration; }
-    public String[] getListed() { return listed; }
-    
-    public void setId(String id) { this.id = id; }
-    public void setType(String type) { this.type = type; }
-    public void setTitle(String title) { this.title = title; }
-    public void setDirector(String director) { this.director = director; }
-    public void setCast(String[] cast) { this.cast = cast; }
-    public void setCountry(String country) { this.country = country; }
-    public void setDate(String date) { this.date = date; }
-    public void setYear(int year) { this.year = year; }
-    public void setRating(String rating) { this.rating = rating; }
-    public void setDuration(String duration) { this.duration = duration; }
-    public void setListed(String[] listed) { this.listed = listed; }
+	public Show() {
+		this.show_id = "";
+		this.type = "";
+		this.title = "";
+		this.director = "";
+		this.cast = new String[1];
+		this.country = "";
+		this.date_added = LocalDate.now();
+		this.release_year = 0;
+		this.rating = "";
+		this.duration = "";
+		this.listed_in = new String[1];
+	}
 
-    public Show(String id, String type, String title, String director, String[] cast, String country, String date, int year, String rating, String duration, String[] listed) {
-        setId(id);
-        setType(type);
-        setTitle(title);
-        setDirector(director);
-        setCast(cast);
-        setCountry(country);
-        setDate(date);
-        setYear(year);
-        setRating(rating);
-        setDuration(duration);
-        setListed(listed);
-    }
+	public Show(String show_id, String type, String title, String director, String[] cast, String country,
+			LocalDate date_added, Integer release_year, String rating, String duration, String[] listed_in) {
+		this.show_id = show_id;
+		this.type = type;
+		this.title = title;
+		this.director = director;
+		this.cast = cast;
+		this.country = country;
+		this.date_added = date_added;
+		this.release_year = release_year;
+		this.rating = rating;
+		this.duration = duration;
+		this.listed_in = listed_in;
+	}
 
-    public Show() {}
+	public void setShow_id(String show_id) {
+		this.show_id = show_id;
+	}
+
+	public String getShow_id() {
+		return show_id;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setDirector(String director) {
+		this.director = director;
+	}
+
+	public String getDirector() {
+		return this.director;
+	}
+
+	public void setCast(String[] cast) {
+		int len = cast.length;
+		for(int i = 0; i < len - 1; i++){
+			for(int j = 0; j < len - i - 1; j++){
+				String atual = cast[j];
+				String prox = cast[j + 1];
+
+				if(atual.compareTo(prox) > 0){
+					String aux = cast[j];
+					cast[j] = cast[j + 1];
+					cast[j + 1] = aux;
+				}
+			}
+		}
+		this.cast = cast;
+	}
+
+	public String[] getCast() {
+		return this.cast;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getCountry() {
+		return this.country;
+	}
+
+	public void setDateAdded(LocalDate date_added) {
+		this.date_added = date_added;
+	}
+
+	public LocalDate getDateAdded() {
+		return this.date_added;
+	}
+
+	public void setReleaseYear(Integer release_year) {
+		this.release_year = release_year;
+	}
+
+	public Integer getReleaseYear() {
+		return this.release_year;
+	}
+
+	public void setRating(String rating) {
+		this.rating = rating;
+	}
+
+	public String getRating() {
+		return this.rating;
+	}
+
+	public void setDuration(String duration) {
+		this.duration = duration;
+	}
+
+	public String getDuration() {
+		return this.duration;
+	}
+
+	public void setListedIn(String[] listed_in) {
+		int len = listed_in.length;
+		for(int i = 0; i < len - 1; i++){
+			for(int j = 0; j < len - i - 1; j++){
+				String atual = listed_in[j];
+				String prox = listed_in[j + 1];
+
+				if(atual.compareTo(prox) > 0){
+					String aux = listed_in[j];
+					listed_in[j] = listed_in[j + 1];
+					listed_in[j + 1] = aux;
+				}
+			}
+		}
+		this.listed_in = listed_in;
+	}
+
+	public String[] getListedIn() {
+		return this.listed_in;
+	}
+
+	public String castToString(){
+		Integer quantidade = this.cast.length;
+
+		StringBuilder sb = new StringBuilder();
+
+		for(int i = 0, k = 0; i < quantidade; i++){
+			Integer wordLen = this.cast[i].length();
+			sb.append(this.cast[i]);
+			if(i != quantidade - 1){
+				sb.append(", ");
+			}
+		}
+
+		return new String(sb);
+	}
+	public String listed_inToString(){
+		Integer quantidade = this.listed_in.length;
+		
+		StringBuilder sb = new StringBuilder();
+
+		for(int i = 0, k = 0; i < quantidade; i++){
+			Integer wordLen = this.listed_in[i].length();
+			sb.append(this.listed_in[i]);
+			if(i != quantidade - 1){
+				sb.append(", ");
+			}
+		}
+
+		return new String(sb);
+	}
+
+	public void imprimir() {
+		String data = "NaN";
+		if(this.date_added != null){
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
+			data = date_added.format(formatter);
+		}
+		System.out.println("=> " + show_id + " ## " + title + " ## " + type + " ## " + director 
+			+ " ## [" + castToString() +"] ## " + country + " ## " + data + " ## " + release_year 
+			+ " ## " + rating + " ## " + duration + " ## [" + listed_inToString() +"] ##");
+	}
+
+	public void ler(String line) {
+		Integer len = line.length();
+		String[] splittedWords = new String[11];
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0, k = 0, l = 0; i < len && k < 11; i++){
+			if(line.charAt(i) != ','){
+				if(line.charAt(i) == '"'){
+					i++;
+					while(line.charAt(i) != '"'){
+						sb.append(line.charAt(i++));
+					}
+				}else{
+					sb.append(line.charAt(i));
+				}
+				
+			}else if(line.charAt(i) == ',' && line.charAt(i + 1) == ','){
+				splittedWords[k] = new String(sb);
+				sb = new StringBuilder();
+				k++;
+				l = 0;
+				sb.append("NaN");
+				splittedWords[k] = new String(sb);
+
+			}else if(line.charAt(i) == ',' && line.charAt(i + 1) != ','){
+				splittedWords[k] = new String(sb);
+				sb = new StringBuilder();
+				k++;
+				l = 0;
+			}
+		}
+
+		String l_show_id = "";
+		String l_type = "";
+		String l_title = "";
+		String l_director = "";
+		String[] l_cast = new String[1];
+		String l_country = "";
+		LocalDate l_date_added = LocalDate.now();
+		Integer l_release_year = 0;
+		String l_rating = "";
+		String l_duration = "";
+		String[] l_listed_in = new String[1];
 
 
-    public static String[] splitCSV(String line) {
-        List<String> campos = new ArrayList<>();
-        boolean entreAspas = false;
-        StringBuilder campo = new StringBuilder();
+		for(int i = 0; i < 11; i++){
+			switch(i){
+				case 0:
+					l_show_id = new String(splittedWords[i]);
+					setShow_id(l_show_id);
+					break;
+				case 1:
+					l_type = new String(splittedWords[i]);
+					setType(l_type);
+					break;
+				case 2:
+					l_title = new String(splittedWords[i]);
+					setTitle(l_title);
+					break;
+				case 3:
+					l_director = new String(splittedWords[i]);
+					setDirector(l_director);
+					break;
+				case 4:
+					Integer countCast = 1;
+					Integer castLen = splittedWords[i].length();
 
-        for (int i = 0; i < line.length(); i++) {
-            char c = line.charAt(i);
+					for(int j = 0; j < castLen; j++){
+						if(splittedWords[i].charAt(j) == ',')
+							countCast++;
+					}
 
-            if (c == '"') {
-                entreAspas = !entreAspas;
-            } else if (c == ',' && !entreAspas) {
-                campos.add(campo.toString().trim());
-                campo.setLength(0); // resetar stringbuilder
-            } else {
-                campo.append(c);
-            }
-        }
-        campos.add(campo.toString().trim());
+					l_cast = new String[countCast];
+					
+					sb = new StringBuilder();
+					for(int j = 0, k = 0; j < castLen; j++){
+						if(splittedWords[i].charAt(j) != ','){
+							sb.append(splittedWords[i].charAt(j));
+						}else if(splittedWords[i].charAt(j) == ','){
+							j++;
+							l_cast[k] = new String(sb);
+							k++;
+							sb = new StringBuilder();
+						}
+						if(j == castLen - 1){
+							j++;
+							l_cast[k] = new String(sb);
+							k++;
+							sb = new StringBuilder();
+						}
+					}
 
-        return campos.toArray(new String[0]);
-    }
+					setCast(l_cast);
+					break;
+				case 5:
+					l_country = new String(splittedWords[i]);
+					setCountry(l_country);
+					break;
+				case 6:
+					if(!splittedWords[i].equals("NaN")){
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
+						l_date_added = LocalDate.parse(splittedWords[i],formatter);
+						setDateAdded(l_date_added);
+					}else{
+						splittedWords[i] = "March 1, 1900";
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
+						l_date_added = LocalDate.parse(splittedWords[i],formatter);
+						setDateAdded(l_date_added);
+					}
+					break;
+				case 7:
+					l_release_year = Integer.parseInt(splittedWords[i]);
+					setReleaseYear(l_release_year);
+					break;
+				case 8:
+					l_rating = new String(splittedWords[i]);
+					setRating(l_rating);
+					break;
+				case 9:
+					l_duration = new String(splittedWords[i]);
+					setDuration(l_duration);
+					break;
+				case 10:
+					Integer countListed_in = 1;
+					Integer listedLen = splittedWords[i].length();
 
-    public void ler(String csv) {
-        String[] campos = splitCSV(csv);
+					for(int j = 0; j < listedLen; j++){
+						if(splittedWords[i].charAt(j) == ',')
+							countListed_in++;
+					}
 
-        if (campos.length >= 11) {
-            setId(campos[0].isEmpty() ? "NaN" : campos[0]);
-            setType(campos[1].isEmpty() ? "NaN" : campos[1]);
-            setTitle(campos[2].isEmpty() ? "NaN" : campos[2]);
-            setDirector(campos[3].replace("\"", "").isEmpty() ? "NaN" : campos[3].replace("\"", ""));
+					l_listed_in = new String[countListed_in];
+					
+					sb = new StringBuilder();
+					for(int j = 0, k = 0; j < listedLen; j++){
+						if(splittedWords[i].charAt(j) != ','){
+							sb.append(splittedWords[i].charAt(j));
+						}else if(splittedWords[i].charAt(j) == ','){
+							j++;
+							l_listed_in[k] = new String(sb);
+							k++;
+							sb = new StringBuilder();
+						}
+						if(j == listedLen - 1){
+							j++;
+							l_listed_in[k] = new String(sb);
+							k++;
+							sb = new StringBuilder();
+						}
+					}
 
-            String castStr = campos[4].replace("\"", "");
-            String[] castArray = castStr.isEmpty() ? new String[]{"NaN"} : castStr.split(", ");
-            if (!castStr.isEmpty()) Arrays.sort(castArray);
-            setCast(castArray);
+					setListedIn(l_listed_in);
+					break;
+			}
+		}
+	}
 
-            setCountry(campos[5].replace("\"", "").isEmpty() ? "NaN" : campos[5].replace("\"", ""));
+	public Show clone(){
+		Show clone = new Show(this.show_id, this.type, this.title, this.director, this.cast, this.country, this.date_added, this.release_year, this.rating, this.duration, this.listed_in);
+		return clone;
+	}
+}
 
-            String dateStr = campos[6].replace("\"", "").trim();
-            setDate(dateStr.isEmpty() ? "NaN" : dateStr);
+public class Main{
 
-            setYear(campos[7].isEmpty() ? 0 : Integer.parseInt(campos[7]));
-            setRating(campos[8].isEmpty() ? "NaN" : campos[8]);
-            setDuration(campos[9].isEmpty() ? "NaN" : campos[9]);
+	public static int datecmp(LocalDate a,LocalDate b){
+		int resp = 0;
 
-            String[] listedArray = campos[10].isEmpty() ? new String[]{"NaN"} : campos[10].split(", ");
-            setListed(listedArray);
-        }
-    }
+		if(resp == 0 && a.getYear() != b.getYear()){
+			resp = (a.getYear() < b.getYear()) ? -1 : 1;
+		}
 
-    public void imprimir() {
-        System.out.printf("=> %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ## %s ##\n",
-            id, title, type, director, Arrays.toString(cast), country,
-            date, // Imprime a string diretamente
-            year == 0 ? "NaN" : String.valueOf(year),
-            rating, duration, Arrays.toString(listed));
-    }
+		if(resp == 0 && a.getMonthValue() != b.getMonthValue()){
+			resp = (a.getMonthValue() < b.getMonthValue()) ? -1 : 1;
+		}
 
-    public Show clone() {
-        Show clone = new Show();
-        clone.id = this.id != null ? new String(this.id) : null;
-        clone.type = this.type != null ? new String(this.type) : null;
-        clone.title = this.title != null ? new String(this.title) : null;
-        clone.director = this.director != null ? new String(this.director) : null;
-        clone.country = this.country != null ? new String(this.country) : null;
-        clone.date = this.date != null ? new String(this.date) : null;
-        clone.year = this.year;
-        clone.rating = this.rating != null ? new String(this.rating) : null;
-        clone.duration = this.duration != null ? new String(this.duration) : null;
+		if(resp == 0 && a.getDayOfMonth() != b.getDayOfMonth()){
+			resp = (a.getDayOfMonth() < b.getDayOfMonth()) ? -1 : 1;
+		}
 
-        if (this.cast != null) {
-            clone.cast = new String[this.cast.length];
-            for (int i = 0; i < this.cast.length; i++) {
-                clone.cast[i] = this.cast[i] != null ? new String(this.cast[i]) : null;
-            }
-        } else {
-            clone.cast = null;
-        }
+		return resp;
+	}
+	public static int verificaShow(Show a, Show b,Integer[] mov,Integer[] comp){
+		int resp = 0;
+		int date = datecmp(a.getDateAdded(),b.getDateAdded());
+		if(date != 0){
+			comp[0]++;
+			resp = date;
+		}else{
+			comp[0]+=2;
+			resp = a.getTitle().compareToIgnoreCase(b.getTitle());
+		}
+		return resp;
+	}
+	public static void quicksort(Show[] array, int esq, int dir, Integer[] mov, Integer[] comp){
+		int i = esq;
+		int j = dir;
+		Show pivo = array[(esq + dir)/2];
+		while(i <= j){
+			while(verificaShow(array[i], pivo, mov, comp) < 0){
+				i++;
+			}
+			while(verificaShow(array[j], pivo, mov, comp) > 0){
+				j--;
+			}
+			if(i <= j){
+				mov[0]++;
+				Show aux = array[i];
+				array[i] = array[j];
+				array[j] = aux;
+				i++;
+				j--;
+			}
+		}
+		if(esq < j){
+			quicksort(array, esq, j, mov, comp);
+		}
+		if(i < 10 && i < dir){
+			quicksort(array, i, dir, mov, comp);
+		}
+	}
+	public static void ordenaQuick(Show[] array, Integer tam){
+		File log = new File("./858950_quicksortParcial.txt");
+		try{
+			FileWriter logw = new FileWriter(log);
 
-        if (this.listed != null) {
-            clone.listed = new String[this.listed.length];
-            for (int i = 0; i < this.listed.length; i++) {
-                clone.listed[i] = this.listed[i] != null ? new String(this.listed[i]) : null;
-            }
-        } else {
-            clone.listed = null;
-        }
+			long inicio = System.nanoTime();
+			Integer[] movimentacoes = new Integer[1];
+			movimentacoes[0] = 0;
+			Integer[] comparacoes = new Integer[1];
+			comparacoes[0] = 0;
 
-        return clone;
-    }
+			quicksort(array, 0, tam - 1, movimentacoes, comparacoes);
+
+			long fim = System.nanoTime();
+			long duracao = fim - inicio;
+
+			logw.write("858950\t" + comparacoes[0] + "\t" + movimentacoes[0] + "\t" + duracao/1_000_000.0 );
+
+			logw.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	public static void main(String[] args) throws FileNotFoundException{
+		Scanner sc = new Scanner(System.in);
+		File arquivo = new File("/tmp/disneyplus.csv");
+		Scanner filesc = new Scanner(arquivo,"UTF-8");
+		filesc.nextLine();
+
+		Show[] shows = new Show[1368];
+		for(int i = 0; i < 1368; i++){
+			String line = filesc.nextLine();
+			shows[i] = new Show();
+			shows[i].ler(line);
+		}
+		filesc.close();
+
+		String getId = sc.nextLine();
+		Show[] array = new Show[1368];
+		int array_tam = 0;
+		while(!getId.equals("FIM")){
+			Integer id = Integer.parseInt(getId.substring(1,getId.length()));
+			array[array_tam++] = shows[id - 1].clone();
+			getId = sc.nextLine();
+		}
+
+		ordenaQuick(array,array_tam);
+		for(int i = 0; i < 10; i++){
+			array[i].imprimir();
+		}
+
+		sc.close();
+	}
 }

@@ -48,7 +48,6 @@ class CriarMatriz {
         if (linhas != colunas || inicio == null) return;
 
         CelulaMat i = inicio;
-        
         while (i != null) {
             System.out.print(i.elemento + " ");
             i = i.dir;
