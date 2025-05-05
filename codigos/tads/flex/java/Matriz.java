@@ -8,6 +8,62 @@ class CriarMatriz {
     CelulaMat inicio;
     int linhas, colunas;
 
+    CelulaMat createColuna(int linhas) {
+        CelulaMat i = new CelulaMat();
+        CelulaMat tmp = i;
+
+        for (int j = 0; j < linhas-1; j++) {
+            CelulaMat nova = new CelulaMat();
+            tmp.inf = nova;
+            nova.sup = tmp;
+
+            tmp = nova;
+        }
+
+        return i;
+    }
+
+    void addColuna() {
+        CelulaMat i;
+        for (i = inicio; i.dir != null; i = i.dir);
+        for (CelulaMat j = createColuna(linhas); j != null; j = j.inf) {
+            i.dir = j;
+            j.esq = i;
+
+            i = i.inf;
+        }
+
+        colunas++;
+    }
+
+    CelulaMat createLinha(int colunas) {
+        CelulaMat i = new CelulaMat();
+        CelulaMat tmp = i;
+
+        for (int j = 0; j < colunas-1; j++) {
+            CelulaMat nova = new CelulaMat();
+            tmp.esq = nova;
+            nova.dir = tmp;
+
+            tmp = nova;
+        }
+
+        return i;
+    }
+
+    void addLinha() {
+        CelulaMat i;
+        for (i = inicio; i.inf != null; i = i.inf);
+        for (CelulaMat j = createLinha(colunas); j != null; j = j.dir) {
+            i.inf = j;
+            j.sup = i;
+
+            i = i.dir;
+        }
+
+        linhas++;
+    }
+
     void removerColuna() {
         if (colunas == 0) {
             return;
