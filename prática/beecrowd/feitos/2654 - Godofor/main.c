@@ -7,41 +7,32 @@ typedef struct {
     int power, kills, mortes;
 } Deuses;
 
-// int compare(const void *a, const void *b) {
-    // Deuses *d1 = (Deuses *)a;
-    // Deuses *d2 = (Deuses *)b;
-// 
-    // return d2->power - d1->power;
-    // return d2->kills - d1->kills;
-    // return d2->mortes - d1->mortes;
-    // return strcmp(d1->nome, d2->nome);
-// }
+int compare(const Deuses *a, const Deuses *b) {
+	if (a->power != b->power) return b->power - a->power;
+	if (a->kills != b->kills) return b->kills - a->kills;
+	if (a->mortes != b->mortes) return b->mortes - a->mortes;
+	
+	return strcmp(a->nome, b->nome);
+}
 
-void sort (Deuses d[], int n) {
-    for (int i = 0; i < n-1; i++) {
-        int maior = i;
-
-        for (int j = i+1; j < n; j++) {
-            if (d[j].power > d[maior].power) {
-                maior = j;
-            } else if (d[j].power == d[maior].power) {
-                if (d[j].kills > d[maior].kills) {
-                    maior = j;
-                }
-            } else if (d[j].kills == d[maior].kills) {
-                if (d[j].mortes > d[maior].mortes) {
-                    maior = j;
-                }
-            } else if (d[j].kills == d[maior].kills) {
-                if (strcmp(d[j].nome, d[maior].nome) < 0) {
-                    maior = j;
-                }
-            }
-        }
-        Deuses tmp = d[i];
-        d[i] = d[maior];
-        d[maior] = tmp;
-    }
+void quicksort(Deuses d[], int esq, int dir) {
+	int i = esq, j = dir;
+	Deuses pivo = d[(esq+dir)/2];
+	
+	if (i <= j) {
+		while (compare(&d[i], &pivo) < 0) i++;
+		while (compare(&d[j], &pivo) > 0) j--;
+		
+		if (i <= j) {
+			Deuses tmp = d[i];
+			d[i] = d[j];
+			d[j] = tmp;
+			i++; j--;
+		}
+	}
+	
+	if (esq < j) quicksort(d, esq, j);
+	if (i < dir) quicksort(d, i, dir);
 }
 
 int main() {
@@ -52,9 +43,7 @@ int main() {
     for (int i = 0; i < n; i++) {
         scanf("%s %d %d %d", d[i].nome, &d[i].power, &d[i].kills, &d[i].mortes);
     }
-    sort(d, n);
-
-    // qsort(d, n, sizeof(Deuses), compare);
+    quicksort(d, 0, n-1);
     printf("%s", d[0].nome);
 
     return 0;
