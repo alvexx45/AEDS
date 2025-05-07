@@ -2,22 +2,30 @@
 #include <stdlib.h>
 #include <string.h>
 
-void selection(int n, char nomes[][31]) {
-    for (int i = 0; i < n - 1; i++) {
-        int menor = i;
-        for (int j = i + 1; j < n; j++) {
-            if (strcmp(nomes[j], nomes[menor]) < 0) {
-                menor = j;
-            }
-        }
-        
-        if (menor != i) {
+int compare(const char *a, const char *b) {
+    return strcmp(a, b);
+}
+
+void quicksort(char nomes[][31], int esq, int dir) {
+    int i = esq, j = dir;
+    char pivo[31];
+    strcpy(pivo, nomes[(esq+dir)/2]);
+
+    while (i <= j) {
+        while (compare(nomes[i], pivo) < 0) i++;
+        while (compare(nomes[j], pivo) > 0) j--;
+
+        if (i <= j) {
             char tmp[31];
             strcpy(tmp, nomes[i]);
-            strcpy(nomes[i], nomes[menor]);
-            strcpy(nomes[menor], tmp);
+            strcpy(nomes[i], nomes[j]);
+            strcpy(nomes[j], tmp);
+            i++; j--;
         }
     }
+
+    if (esq < j) quicksort(nomes, esq, j);
+    if (i < dir) quicksort(nomes, i, dir);
 }
 
 int main() {
@@ -33,7 +41,7 @@ int main() {
         if (comp == '+') b++;
         if (comp == '-') m++;
     }
-    selection(n, nomes);
+    quicksort(nomes, 0, n-1);
 
     for (int i = 0; i < n; i++) {
         printf("%s\n", nomes[i]);
