@@ -13,17 +13,17 @@ class Celula {
 class Lista {
     Celula inicio, fim;
 
-    void inverter() {
-        Celula a = null, b = null;
-        Celula i = inicio;
-        fim = inicio;
-
-        while (i != null) {
-            a = i.prox;
-            i.prox = b;
-            b = i;
-            i = a;
-        }
-        inicio = b;
-    }
+	void inverter() {
+		Celula prev = null, next = null;
+		Celula i = inicio;
+		fim = inicio;
+		
+		while (i != null) {
+			next = i.prox;
+			i.prox = prev;
+			prev = i;
+			i = next;
+		}
+		inicio = prev;
+	}
 }
