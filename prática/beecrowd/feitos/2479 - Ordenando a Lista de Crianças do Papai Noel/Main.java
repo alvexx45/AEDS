@@ -1,21 +1,28 @@
 import java.util.Scanner;
 
 class Main {
-    public static void selection(int n, String nomes[]) {
-        for (int i = 0; i < n - 1; i++) {
-            int menor = i;
-            for (int j = i + 1; j < n; j++) {
-                if (nomes[j].compareTo(nomes[menor]) < 0) {
-                    menor = j;
-                }
-            }
+    public static int compare(String a, String b) {
+        return a.compareTo(b);
+    }
 
-            if (menor != i) {
+    public static void quicksort(String[] nomes, int esq, int dir) {
+        int i = esq, j = dir;
+        String pivo = nomes[(esq+dir)/2];
+
+        while (i <= j) {
+            while(compare(nomes[i], pivo) < 0) i++;
+            while(compare(nomes[j], pivo) > 0) j--;
+
+            if (i <= j) {
                 String tmp = nomes[i];
-                nomes[i] = nomes[menor];
-                nomes[menor] = tmp;
+                nomes[i] = nomes[j];
+                nomes[j] = tmp;
+                i++; j--;
             }
-        }
+        } 
+
+        if (esq < j) quicksort(nomes, esq, j);
+        if (i < dir) quicksort(nomes, i, dir);
     }
 
     public static void main(String[] args) {
@@ -35,7 +42,7 @@ class Main {
             if (comp == '+') b++;
             if (comp == '-') m++;
         }
-        selection(n, nomes);
+        quicksort(nomes, 0, n-1);
 
         for (String nome : nomes) {
             System.out.println(nome);
