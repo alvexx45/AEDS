@@ -1,22 +1,41 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <stdbool.h>
 
 int main() {
-    int k = 1;
     int p, s;
-    scanf("%d %d", &p, &s);
+    int testes = 0;
 
-    while (p != 0 && s != 0) {
-        int u[s], v[s];
+    while (true) {
+        scanf("%d %d", &p, &s);
+        if (p == 0 && s == 0) break;
+
+        testes++;
+
+        int u, v;
+        int cU = -1, cV = -1;
+
+        printf("Teste %d\n", testes);
+        
         for (int i = 0; i < s; i++) {
-            scanf("%d %d", &u[i], &v[i]);
-        }
-        intervalos(u, v);
-        printf("Teste %d");
-        k++;
-    }
+            scanf("%d %d", &u, &v);
 
+            if (cU == -1 || u > cV) {
+                if (cU != -1) {
+                    printf("%d %d\n", cU, cV);
+                }
+                cU = u;
+                cV = v;
+            } else {
+                if (v > cV) {
+                    cV = v;
+                }
+            }
+        }
+        
+        if (cU != -1) {
+            printf("%d %d\n", cU, cV);
+        }
+    }
 
     return 0;
 }

@@ -7,22 +7,31 @@ typedef struct {
     int ouro, prata, bronze;
 } Pais;
 
-void sort(Pais p[], int n) {
-    for (int i = 0; i < n-1; i++) {
-        int maior = i;
-        for (int j = i+1; j < n; j++) {
-            if(p[j].ouro > p[maior].ouro ||
-                (p[j].ouro == p[maior].ouro && p[j].prata > p[maior].prata) ||
-                (p[j].prata == p[maior].prata && p[j].bronze > p[maior].bronze) ||
-                (p[j].bronze == p[maior].bronze && strcmp(p[j].nome, p[maior].nome) < 0)){
-                    maior = j;
-                }
+int compare(const Pais *a, const Pais *b) {
+    if (a->ouro != b->ouro) return b->ouro - a->ouro;
+    if (a->prata != b->prata) return b->prata - a->prata;
+    if (a->bronze != b->bronze) return b->bronze - a->bronze;
+    return strcmp(a->nome, b->nome);
+}
+
+void quicksort(Pais p[], int esq, int dir) {
+    int i = esq, j = dir;
+    Pais pivo = p[(esq+dir)/2];
+
+    while (i <= j) {
+        while (compare(&p[i], &pivo) < 0) i++;
+        while (compare(&p[j], &pivo) > 0) j--;
+
+        if (i <= j) {
+            Pais tmp = p[i];
+            p[i] = p[j];
+            p[j] = tmp;
+            i++; j--;
         }
-        
-        Pais tmp = p[i];
-        p[i] = p[maior];
-        p[maior] = tmp;
     }
+
+    if (esq < j) quicksort(p, esq, j);
+    if (i < dir) quicksort(p, i, dir);
 }
 
 int main() {
@@ -34,7 +43,7 @@ int main() {
     for (int i = 0; i < n; i++) {
         scanf("%s %d %d %d", p[i].nome, &p[i].ouro, &p[i].prata, &p[i].bronze);
     }
-    sort(p, n);
+    quicksort(p, 0, n-1);
 
     for (int i = 0; i < n; i++) {
         printf("%s %d %d %d\n", p[i].nome, p[i].ouro, p[i].prata, p[i].bronze);

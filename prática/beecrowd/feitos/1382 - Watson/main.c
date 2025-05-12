@@ -24,6 +24,7 @@ int selection(int n, int dna[]) {
     return trocas;
 }
 
+
 int main() {
     int t;
     scanf("%d", &t);
