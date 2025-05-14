@@ -1,43 +1,40 @@
 import java.util.Scanner;
-import java.util.List;
-import java.util.ArrayList;
 
-public class Main{
+class Main{
 	public static void main(String[] args){
 		Scanner sc = new Scanner(System.in);
 		String line = sc.nextLine();
 
-		ArrayList<Jogadores> list = new ArrayList<>();
+		Jogadores jogadores[] = new Jogadores[14];
+		int k = 0;
+
 		while(!line.equals("FIM")){
 			Jogadores j = new Jogadores();
 
 			j.ler(line);
-			list.add(j);
+			jogadores[k++] = j;	
 			
 			line = sc.nextLine();
 		}
-		insertion(list);
+		insertion(jogadores, k);
 
 
-		for (int i = 0; i < ) {
-			jogador.imprimir();
-
+		for (int i = 0; i < k; i++) {
+			jogadores[i].imprimir();
 		}
-
 
 		sc.close();
 	}
 
-	public static void insertion(ArrayList<Jogadores> list) {
-		for (int i = 1; i < list.size(); i++) {
-			Jogadores pivo = list.get(i);
+	public static void insertion(Jogadores[] array, int n) {
+		for (int i = 1; i < n; i++) {
+			Jogadores pivo = array[i];
 			int j = i-1;
 
-			while (j >= 0 && list.get(j).id > pivo.id) {
-				list.set(j+1, list.get(j));
-				j--;
+			while (j >= 0 && array[j].id > pivo.id) {
+				array[j+1] = array[j--];
 			}
-			list.set(j+1, pivo);
+			array[j+1] = pivo;
 		}
 	}
 }
