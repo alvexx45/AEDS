@@ -13,8 +13,8 @@ class Merge {
         int n2 = dir-meio;
         int i, j, k;
 
-        int[] a1 = new int[n1+1];
-        int[] a2 = new int[n2+1];
+        int[] a1 = new int[n1];
+        int[] a2 = new int[n2];
 
         for (i = 0; i < n1; i++) {
             a1[i] = array[esq+i];
@@ -34,13 +34,8 @@ class Merge {
             }
         }
 
-        while (i < n1) {
-            array[k++] = a1[i++];
-        }
-
-        while (j < n2) {
-            array[k++] = a2[j++];
-        }
+        while (i < n1) array[k++] = a1[i++];
+        while (j < n2) array[k++] = a2[j++];
     }
 }
 
