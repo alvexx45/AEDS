@@ -1,8 +1,72 @@
+import java.util.Scanner;
+
 class Main {
 	public static void main(String[] args) {
-		
+		Scanner sc = new Scanner(System.in);
+
+		Jogadores[] array = new Jogadores[14];
+		int k = 0;
+
+		String line = sc.nextLine();
+		while(!line.equals("FIM")) {
+			Jogadores j = new Jogadores();
+			
+			j.ler(line);
+			array[k++] = j;
+
+			line = sc.nextLine();
+		}
+		mergesort(array, 0, k-1);
+
+		for (int i = 0; i < k; i++) {
+			array[i].imprimir();
+		}
+
+		sc.close();
 	}	
 	
+	public static void mergesort(Jogadores[] array, int esq, int dir) {
+		if (esq < dir) {
+			int meio = (esq+dir)/2;
+			mergesort(array, esq, meio);
+			mergesort(array, meio+1, dir);
+			intercalar(array, esq, meio, dir);
+		}
+	}
+
+	public static int compare(String a, String b) {
+		return a.compareTo(b);
+	}
+
+	private static void intercalar(Jogadores[] array, int esq, int meio, int dir) {
+		int n1 = meio-esq+1;
+		int n2 = dir-meio;
+		int i, j, k;
+
+		Jogadores[] a1 = new Jogadores[n1];
+		Jogadores[] a2 = new Jogadores[n2];
+
+		for (i = 0; i < n1; i++) {
+			a1[i] = array[esq+i]; 
+		}
+
+		for (j = 0; j < n2; j++) {
+			a2[j] = array[meio+j+1];
+		}
+
+		i = 0; j = 0; k = esq;
+
+		while (i < n1 && j < n2) {
+			if ((compare(a1[i].nome, a2[j].nome) <= 0)) {
+				array[k++] = a1[i++];
+			} else {
+				array[k++] = a2[j++];
+			}
+		}
+
+		while (i < n1) array[k++] = a1[i++];
+		while (j < n2) array[k++] = a2[j++];
+	}
 }
 
 class Date {
