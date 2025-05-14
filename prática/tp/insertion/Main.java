@@ -3,11 +3,11 @@ import java.util.Scanner;
 class Main{
 	public static void main(String[] args){
 		Scanner sc = new Scanner(System.in);
-		String line = sc.nextLine();
 
 		Jogadores jogadores[] = new Jogadores[14];
 		int k = 0;
 
+		String line = sc.nextLine();
 		while(!line.equals("FIM")){
 			Jogadores j = new Jogadores();
 

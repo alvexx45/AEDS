@@ -1,3 +1,10 @@
+class Main {
+	public static void main(String[] args) {
+		
+	}	
+	
+}
+
 class Date {
 	String dia;
 	String mes;
