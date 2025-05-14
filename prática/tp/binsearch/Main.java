@@ -1,3 +1,68 @@
+import java.util.Scanner;
+
+class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		Jogadores[] array = new Jogadores[14];
+		int k = 0;
+
+		String line = sc.nextLine();
+		while (!line.equals("FIM")) {
+			Jogadores j = new Jogadores();
+
+			j.ler(line);
+			array[k++] = j;
+
+			line = sc.nextLine();
+		}
+		insertion(array, k);
+
+		line = sc.nextLine();
+		while(!line.equals("FIM")) {
+			boolean resp = binsearch(array, k, line);
+			System.out.println(resp ? "SIM" : "NAO");
+
+			line = sc.nextLine();
+		}
+
+		sc.close();
+	}
+
+	public static void insertion(Jogadores[] array, int n) {
+		for (int i = 1; i < n; i++) {
+			Jogadores pivo = array[i];
+			int j = i-1;
+
+			while (j >= 0 && array[j].nome.compareTo(pivo.nome) > 0) {
+				array[j+1] = array[j--];
+			}
+			array[j+1] = pivo;
+		}
+	}
+
+	public static boolean binsearch(Jogadores[] array, int n, String x) {
+		boolean resp = false;
+		int esq = 0, dir = n-1;
+
+		while (esq <= dir) {
+			int meio = (esq+dir)/2;
+			int cmp = array[meio].nome.compareTo(x);
+
+			if (cmp == 0) {
+				resp = true;
+				esq = n;
+			} else if (cmp < 0) {
+				esq = meio+1;
+			} else {
+				dir = meio-1;
+			}
+		}
+		
+		return resp;
+	}
+}
+
 class Date {
 	String dia;
 	String mes;
