@@ -1,3 +1,47 @@
+import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
+
+public class Main{
+	public static void main(String[] args){
+		Scanner sc = new Scanner(System.in);
+		String line = sc.nextLine();
+
+		ArrayList<Jogadores> list = new ArrayList<>();
+		while(!line.equals("FIM")){
+			Jogadores j = new Jogadores();
+
+			j.ler(line);
+			list.add(j);
+			
+			line = sc.nextLine();
+		}
+		insertion(list);
+
+
+		for (int i = 0; i < ) {
+			jogador.imprimir();
+
+		}
+
+
+		sc.close();
+	}
+
+	public static void insertion(ArrayList<Jogadores> list) {
+		for (int i = 1; i < list.size(); i++) {
+			Jogadores pivo = list.get(i);
+			int j = i-1;
+
+			while (j >= 0 && list.get(j).id > pivo.id) {
+				list.set(j+1, list.get(j));
+				j--;
+			}
+			list.set(j+1, pivo);
+		}
+	}
+}
+
 class Date {
 	String dia;
 	String mes;

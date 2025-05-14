@@ -1,3 +1,24 @@
+import java.util.Scanner;
+
+public class Main{
+	public static void main(String[] args){
+		Scanner sc = new Scanner(System.in);
+		String line = sc.nextLine();
+
+		while(!line.equals("FIM")){
+			Jogadores jogador = new Jogadores();
+
+			jogador.ler(line);
+
+			jogador.imprimir();
+
+			line = sc.nextLine();
+		}
+
+		sc.close();
+	}
+}
+
 class Date {
 	String dia;
 	String mes;
