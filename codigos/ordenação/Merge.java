@@ -24,15 +24,23 @@ class Merge {
             a2[j] = array[meio+j+1];
         }
 
-        a1[i] = a2[j] = 0x7FFFFFFF;
+        i = 0; j = 0; k = esq;
 
-        for (i = j = 0, k = esq; k <= dir; k++) {
+        while (i < n1 && j < n2) {
             if (a1[i] <= a2[j]) {
-                array[k] = a1[i++];
+                array[k++] = a1[i++];
             } else {
-                array[k] = a2[j++];
+                array[k++] = a2[j++];
             }
-        }   
+        }
+
+        while (i < n1) {
+            array[k++] = a1[i++];
+        }
+
+        while (j < n2) {
+            array[k++] = a2[j++];
+        }
     }
 }
 
