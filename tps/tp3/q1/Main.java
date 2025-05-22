@@ -39,6 +39,73 @@ class Main {
     }
 }
 
+class Lista {
+    Show[] array;
+    int n;
+
+    Lista(int size) {
+        array = new Show[size];
+    }
+
+    void inserirInicio(Show x) {
+        if (n >= array.length) return;
+
+        for (int i = n; i > 0; i--) {
+            array[i] = array[i-1];
+        }
+
+        array[0] = x;
+        n++;
+    }
+    void inserirFim(Show x) {
+        if (n >= array.length) return;
+
+        array[n++] = x;
+    }
+    void inserir(Show x, int pos) {
+        if (n >= array.length || (pos < 0 || pos > n)) return;
+
+        for (int i = n; i > pos; i--) {
+            array[i] = array[i-1];
+        }
+
+        array[pos] = x;
+        n++;
+    }
+
+    Show removerInicio() {
+        if (n == 0) return null;
+
+        Show resp = array[0];
+        n--;
+
+        for (int i = 0; i < n; i++) {
+            array[i] = array[i+1];
+        }
+
+        return resp;
+    }
+
+    Show removerFim() {
+        if (n == 0) return null;
+
+        return array[--n];
+    }
+
+    Show remover(int pos) {
+        if (n == 0 || (pos < 0 || pos > 0)) return null;
+
+        Show resp = array[pos];
+        n--;
+
+        for (int i = pos; i < n; i++) {
+            array[i] = array[i+1];
+        }
+
+        return resp;
+    }
+}
+
 class Show {
     private String id;
     private String type;
