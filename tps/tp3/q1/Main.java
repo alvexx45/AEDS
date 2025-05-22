@@ -8,14 +8,12 @@ class Main {
         String path = "/tmp/disneyplus.csv";
         // String path = "../disneyplus.csv";
 
-        Show[] lista = new Show[1369];
-        int i = 0;
+        Lista lista = new Lista(1369);
 
         String lerId = sc.nextLine();
-        while (!lerId.equals("FIM"))  {
+        while (!lerId.equals("FIM")) {
             try (BufferedReader br = new BufferedReader(new FileReader(path))) {
                 String line = br.readLine(); // ignorar primeira linha
-                // br.readLine();
 
                 while ((line = br.readLine()) != null) {
                     String[] campos = Show.splitCSV(line);
@@ -23,19 +21,75 @@ class Main {
                     if (campos.length > 0 && campos[0].equals(lerId)) {
                         Show show = new Show();
                         show.ler(line);
-                        lista[i++] = show;
-                        show.imprimir();
-                        
+                        lista.inserirFim(show);
                         break;
                     }
-
                 }
             } catch (Exception e) {}
             
             lerId = sc.nextLine();
         }
 
+        int n = Integer.parseInt(sc.nextLine());
+        for (int i = 0; i < n; i++) {
+            String[] cmd = sc.nextLine().split(" ");
+            
+            try {
+                switch (cmd[0]) {
+                    case "II":
+                        Show showII = new Show();
+                        showII.ler(findShow(cmd[1], path));
+                        lista.inserirInicio(showII);
+                        break;
+                    case "I*":
+                        int posI = Integer.parseInt(cmd[1]);
+                        Show showIStar = new Show();
+                        showIStar.ler(findShow(cmd[2], path));
+                        lista.inserir(showIStar, posI);
+                        break;
+                    case "IF":
+                        Show showIF = new Show();
+                        showIF.ler(findShow(cmd[1], path));
+                        lista.inserirFim(showIF);
+                        break;
+                    case "RI":
+                        Show removedRI = lista.removerInicio();
+                        System.out.println("(R) " + removedRI.getTitle());
+                        break;
+                    case "R*":
+                        int posR = Integer.parseInt(cmd[1]);
+                        Show removedRStar = lista.remover(posR);
+                        System.out.println("(R) " + removedRStar.getTitle());
+                        break;
+                    case "RF":
+                        Show removedRF = lista.removerFim();
+                        System.out.println("(R) " + removedRF.getTitle());
+                        break;
+                }
+            } catch (Exception e) {
+                // System.out.println("Erro ao processar comando: " + e.getMessage());
+            }
+        }
+
+        // Imprimir todos os elementos restantes na lista
+        for (int i = 0; i < lista.n; i++) {
+            lista.array[i].imprimir();
+        }
+
         sc.close();
+    }
+
+    private static String findShow(String id, String path) throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line = br.readLine(); // ignorar primeira linha
+            while ((line = br.readLine()) != null) {
+                String[] campos = Show.splitCSV(line);
+                if (campos.length > 0 && campos[0].equals(id)) {
+                    return line;
+                }
+            }
+        }
+        return "";
     }
 }
 
