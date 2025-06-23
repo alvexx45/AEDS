@@ -1,9 +1,0 @@
-a) Falsa, pois o mergesort terá um custo O(n*log n) em qualquer situação, já o quicksort terá custo O(n) para dados quase ordenados (melhor caso).
-
-b) Verdadeira, pelo fato do heapsort ser in-place e possuir um custo O(n*log n), o insertion também é in-place, mas possui custo O(n²). Os demais algoritmos exigem memória adicional.
-
-c) Falsa, o quicksort realmente possui custo O(n* logn) no melhor e médio casos, mas no pior caso, onde pivô é o menor/maior elemento, o que resulta em apenas um elemento eliminado em cada chamada, essa complexidade vira O(n²).
-
-d) Falsa, o caminhamento apresentado se trata do pré-ordem, que imprime raiz -> esq -> dir. O pós-ordem imprimire esq -> dir -> raiz, então a sequência seria [5, 13, 10, 17, 22, 20, 15].
-
-e) Falsa, em heaps todos os filhos devem ser menores/maiores (depende da escolha entre min e max heap)ou iguais, já na BST os filhos a esquerda devem ser menores e a direita maiores que a raiz.
