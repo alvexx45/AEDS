@@ -297,55 +297,92 @@ class Show{
         }
 
     }
-
-    
-
 }
 
-class Celula{
+class No{
     Show elemento;
-    Celula prox;
+    No dir,esq;
 
-    Celula(Show elemento){
-        this.elemento = elemento;
-        this.prox = null;
+    public No(){
+        this.elemento = null;
+        this.dir = null;
+        this.esq = null;
     }
+
+    public No(Show x){
+        this.elemento = x;
+        this.dir = null;
+        this.esq = null;
+    }
+
 }
 
-class Pilha{
-    Celula topo;
-    int tam;
-
-    Pilha(){
-        this.topo = null;
-        this.tam = 0;
+class Arvore{
+    No raiz;
+    public Arvore(){
+        this.raiz = null;
     }
 
-    public void inserir(Show x){
-        Celula tmp = new Celula(x);
-        tmp.prox = this.topo;
-        this.topo = tmp;
-        this.tam++;
+    public void inserir(Show i){
+        this.raiz = inserir(i,raiz);
     }
 
-    public Show remover(){
-        Show resp = this.topo.elemento;
-        this.topo = this.topo.prox;
-        this.tam--;
-        return resp;
-    }
+    private No inserir(Show i, No n){
 
-    public void mostrar(){
-        int tam = this.tam - 1;
-
-        for(Celula i = this.topo;i!=null;i=i.prox,tam--){
-            System.out.printf("[%d] ",tam);
-            i.elemento.imprimir();
+        if(n == null){
+            n = new No(i);
+        }else if(comparando(n.elemento, i) > 0){
+            n.esq = inserir(i, n.esq);
+        }else if(comparando(n.elemento, i) < 0){
+            n.dir = inserir(i, n.dir);
         }
 
+        return n;
     }
 
+    public void pesquisar(String i){
+        System.out.printf("=>raiz ");
+        pesquisar(i, raiz);
+    }
+    private void pesquisar(String i,No n){
+        if(n == null){
+            System.out.printf("NAO\n");
+        }else if(comparando(n.elemento, i) > 0){
+            System.out.printf("esq ");
+            pesquisar(i, n.esq);
+        }else if(comparando(n.elemento, i) < 0){
+            System.out.printf("dir ");
+            pesquisar(i, n.dir);
+        }else{
+            System.out.printf("SIM\n");
+        }
+    }
 
+    private int comparando(Show n, String i){
+        int result;
+        if(n.getTitle().compareTo(i) > 0){
+            result = 1;
+        }else if(n.getTitle().compareTo(i) < 0){
+            result = -1;
+        }else{
+            result = 0;
+        }
+
+        return result;
+    }
+
+    private int comparando(Show n, Show i){
+        int result;
+        if(n.getTitle().compareTo(i.getTitle()) > 0){
+            result = 1;
+        }else if(n.getTitle().compareTo(i.getTitle()) < 0){
+            result = -1;
+        }else{
+            result = 0;
+        }
+
+        return result;
+    }
 }
 
 public class Main{
@@ -356,30 +393,18 @@ public class Main{
         Scanner sc = new Scanner(System.in);
         Show.leiaShow(show);
         String linha = sc.nextLine();
-        Pilha pilha = new Pilha();
+        Arvore arvore = new Arvore();
         while (!linha.equals("FIM")) {
             int index = Integer.parseInt(linha.substring(1))-1;
-            pilha.inserir(show[index]);
+            arvore.inserir(show[index]);
             linha = sc.nextLine();
         }
-
         linha = sc.nextLine();
 
-        int num = Integer.parseInt(linha);
-        for(int i =0; i < num;i++){
+        while (!linha.equals("FIM")) {
+            arvore.pesquisar(linha);
             linha = sc.nextLine();
-            String[] splitado = linha.split(" ");
-
-            if(splitado[0].equals("I")){
-                int index = Integer.parseInt(splitado[1].substring(1))-1;
-                pilha.inserir(show[index]);
-            }else if(splitado[0].equals("R")){
-                Show resp = pilha.remover();
-                System.out.println("(R) " + resp.getTitle());
-            }
         }
-
-        pilha.mostrar();
     }
 
 }
