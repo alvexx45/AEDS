@@ -66,7 +66,7 @@ class Arvore {
             i.carro = j.carro;
             j = j.esq;
         } else {
-            j.dir = maiorEsq(i, j);
+            j.dir = maiorEsq(i, j.dir);
         }
 
         return j;
