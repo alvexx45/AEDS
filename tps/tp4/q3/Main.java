@@ -1,98 +1,147 @@
+package Q3;
 import java.io.*;
 import java.util.*;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
+class No {
+    SHOW show;
+    No esq, dir;
+    int altura;
 
-// Hash direta com rehash
-class Hash{
-    private SHOW tabela[];
-    private int comparacoes;
-    private int tamTab;
+    public No(SHOW s) {
+        this.show = s;
+        this.esq = this.dir = null;
+        this.altura = 1;
+    }
+}
 
-    public Hash(){
-        this.tamTab = 21;
-        tabela = new SHOW[tamTab];
-        for(int i = 0; i < tamTab; i++){
-            tabela[i] = null;
-        }
-        comparacoes = 0;
+class Arvore {
+    No raiz;
+    int comparacoes = 0;
+
+    public Arvore() {
+        this.raiz = null;
     }
 
     public int getComparacoes() {
         return comparacoes;
     }
 
-    private int hash(String nome){
-        int soma = 0;
-        for(int i = 0; i < nome.length(); i++){
-            soma += nome.charAt(i);
-        }
-        return soma % tamTab;
+    private int altura(No no) {
+        return (no == null) ? 0 : no.altura;
     }
 
-    // A saida do verde nao esta utilizando ela corretamente. So esta usando a funcao hash
-    private int rehash(String nome){
-        int soma = 0;
-        for(int i = 0; i < nome.length(); i++){
-            soma += nome.charAt(i);
-        }
-        return /*++*/soma % tamTab;
-    } 
+    private int fatorBalanceamento(No no) {
+        if (no == null) return 0;
+        return altura(no.esq) - altura(no.dir);
+    }
 
-    public boolean inserir(SHOW show){
-        boolean resp = false;
-        if(show != null){
+    private No rotacaoDireita(No y) {
+        No x = y.esq;
+        No T2 = x.dir;
+
+        x.dir = y;
+        y.esq = T2;
+
+        y.altura = Math.max(altura(y.esq), altura(y.dir)) + 1;
+        x.altura = Math.max(altura(x.esq), altura(x.dir)) + 1;
+
+        return x;
+    }
+
+    private No rotacaoEsquerda(No x) {
+        No y = x.dir;
+        No T2 = y.esq;
+
+        y.esq = x;
+        x.dir = T2;
+
+        x.altura = Math.max(altura(x.esq), altura(x.dir)) + 1;
+        y.altura = Math.max(altura(y.esq), altura(y.dir)) + 1;
+
+        return y;
+    }
+
+    public void inserir(SHOW s) {
+        raiz = inserir(s, raiz);
+    }
+
+    private No inserir(SHOW s, No no) {
+        if (no == null) {
+            return new No(s);
+        }
+
+        if (s.getTITLE().compareTo(no.show.getTITLE()) < 0) {
+            no.esq = inserir(s, no.esq);
+        } else if (s.getTITLE().compareTo(no.show.getTITLE()) > 0) {
+            no.dir = inserir(s, no.dir);
+        } else {
+            return no;
+        }
+
+        // Atualizar altura do nó atual
+        no.altura = 1 + Math.max(altura(no.esq), altura(no.dir));
+
+        // Verificar fator de balanceamento
+        int balanceamento = fatorBalanceamento(no);
+
+        // Rotação Esquerda-Esquerda
+        if (balanceamento > 1 && s.getTITLE().compareTo(no.esq.show.getTITLE()) < 0) {
+            return rotacaoDireita(no);
+        }
+
+        // Rotação Direita-Direita
+        if (balanceamento < -1 && s.getTITLE().compareTo(no.dir.show.getTITLE()) > 0) {
+            return rotacaoEsquerda(no);
+        }
+
+        // Rotação Esquerda-Direita
+        if (balanceamento > 1 && s.getTITLE().compareTo(no.esq.show.getTITLE()) > 0) {
+            no.esq = rotacaoEsquerda(no.esq);
+            return rotacaoDireita(no);
+        }
+
+        // Rotação Direita-Esquerda
+        if (balanceamento < -1 && s.getTITLE().compareTo(no.dir.show.getTITLE()) < 0) {
+            no.dir = rotacaoDireita(no.dir);
+            return rotacaoEsquerda(no);
+        }
+
+        return no;
+    }
+
+    public boolean pesquisar(String s) {
+        System.out.print("raiz");
+        return pesquisar(s, raiz);
+    }
+
+    private boolean pesquisar(String s, No i) {
+        boolean resp;
+        if (i == null) {
             comparacoes++;
-            int pos = hash(show.getTITLE());
-            if(tabela[pos] == null){
-                comparacoes++;
-                tabela[pos] = show;
-                resp = true;
-            }
-            else{
-                pos = rehash(show.getTITLE());
-                if(tabela[pos] == null){
-                    comparacoes++;
-                    tabela[pos] = show;
-                    resp = true;
-                }
-            }
+            resp = false;
+        } else if (s.equals(i.show.getTITLE())) {
+            comparacoes++;
+            resp = true;
+        } else if (s.compareTo(i.show.getTITLE()) < 0) {
+            System.out.print(" esq");
+            comparacoes++;
+            resp = pesquisar(s, i.esq);
+        } else {
+            System.out.print(" dir");
+            comparacoes++;
+            resp = pesquisar(s, i.dir);
         }
         return resp;
     }
-
-    public boolean pesquisar(String nome){
-        boolean resp = false;
-        int pos = hash(nome);
-
-        if(tabela[pos] != null){
-            comparacoes++;
-            if(tabela[pos].getTITLE().compareTo(nome) == 0){
-                comparacoes++;
-                resp = true;
-            }
-            else{
-                pos = rehash(nome);
-                if(tabela[pos].getTITLE().compareTo(nome) == 0){
-                    comparacoes++;
-                    resp = true;
-                }
-            }
-        }
-        System.out.print(" (Posicao: " + pos + ")");
-        return resp;
-    }
-    
 }
-
-
 
 class SHOW {
     private String SHOW_ID;
     private String TYPE;
     private String TITLE;
-    private String DIRECTOR[];
+    private String[] DIRECTOR;
     private String[] CAST;
     private String COUNTRY;
     private Date DATE_ADDED;
@@ -106,7 +155,6 @@ class SHOW {
 
     public SHOW(String SHOW_ID, String TYPE, String TITLE, String[] DIRECTOR, String[] CAST, String COUNTRY,
             Date DATE_ADDED, int RELEASE_YEAR, String RATING, String DURATION, String[] LISTED_IN) {
-
         setID(SHOW_ID);
         setTYPE(TYPE);
         setTITLE(TITLE);
@@ -122,7 +170,6 @@ class SHOW {
 
     public SHOW clone() {
         SHOW clonado = new SHOW();
-
         clonado.setID(this.SHOW_ID);
         clonado.setTYPE(this.TYPE);
         clonado.setTITLE(this.TITLE);
@@ -134,12 +181,8 @@ class SHOW {
         clonado.setRELEASE_YEAR(this.RELEASE_YEAR);
         clonado.setDURATION(this.DURATION);
         clonado.setLISTED_IN(this.LISTED_IN);
-
         return clonado;
-
     }
-
-    // FUNÇÕES SET
 
     public void setID(String SHOW_ID) {
         this.SHOW_ID = SHOW_ID;
@@ -191,12 +234,7 @@ class SHOW {
     }
 
     private void setDATE_ADDED(Date DATE_ADDED) {
-        if (DATE_ADDED == null) {
-            this.DATE_ADDED = null;
-        } else {
-            this.DATE_ADDED = DATE_ADDED;
-        }
-
+        this.DATE_ADDED = DATE_ADDED;
     }
 
     private void setRELEASE_YEAR(int RELEASE_YEAR) {
@@ -230,8 +268,6 @@ class SHOW {
             this.LISTED_IN[i] = LISTED_IN[i].trim();
         }
     }
-
-    // FUNÇÕES GET
 
     public String getID() {
         return SHOW_ID;
@@ -288,8 +324,6 @@ class SHOW {
         System.out.print(LISTED_IN[LISTED_IN.length - 1] + "] ##");
     }
 
-    // OUTRAS FUNÇÕES
-
     public void Leitura(String entrada) {
         List<String> partes = new ArrayList<>();
         boolean dentroAspas = false;
@@ -297,14 +331,13 @@ class SHOW {
 
         for (int i = 0; i < entrada.length(); i++) {
             char c = entrada.charAt(i);
-
             if (c == '"') {
-                dentroAspas = !dentroAspas; // alterna se está dentro de aspas
+                dentroAspas = !dentroAspas;
             } else if (c == ',' && !dentroAspas) {
                 partes.add(atual.toString().trim());
-                atual.setLength(0); // limpa o StringBuilder
+                atual.setLength(0);
             } else {
-                atual.append(c); // adiciona o character no StringBuilder
+                atual.append(c);
             }
         }
         partes.add(atual.toString().trim());
@@ -332,7 +365,6 @@ class SHOW {
         setRATING(partes.get(8));
         setDURATION(partes.get(9));
         setLISTED_IN(partes.get(10).split(","));
-
     }
 
     private void ordenar(String[] Lista) {
@@ -343,12 +375,10 @@ class SHOW {
                     menor = j;
                 }
             }
-
             String temp = Lista[menor];
             Lista[menor] = Lista[i];
             Lista[i] = temp;
         }
-
     }
 
     public void imprimir() {
@@ -356,69 +386,57 @@ class SHOW {
         getDIRECTOR();
         getCAST();
         System.out.print(getCOUNTRY() + " ## ");
-
         SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
         if (getDATE_ADDED() != null) {
             System.out.print(sdf.format(getDATE_ADDED()) + " ## ");
         } else {
             System.out.print("NaN ## ");
         }
-
         System.out.print(getRELEASE_YEAR() + " ## " + getRATING() + " ## " + getDURATION() + " ## ");
         getLISTED_IN();
         System.out.println();
     }
-
 }
 
 public class Main {
-
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-
         String entrada;
-        Hash hash = new Hash();
-
+        Arvore arvore = new Arvore();
         long tempoInicial = System.currentTimeMillis();
- 
 
         try {
             while (!(entrada = sc.nextLine()).equals("FIM")) {
-                BufferedReader br = new BufferedReader(new FileReader("/tmp/disneyplus.csv"));
-                String linha = br.readLine(); // pula o cabeçalho
+                BufferedReader br = new BufferedReader(new FileReader("tmp/disneyplus.csv"));
+                String linha = br.readLine();
                 boolean encontrado = false;
 
-                linha = br.readLine(); // lê a primeira linha de dados
+                linha = br.readLine();
                 while (linha != null && !encontrado) {
                     if (linha.startsWith(entrada + ",")) {
                         SHOW tmp = new SHOW();
                         tmp.Leitura(linha);
-                        hash.inserir(tmp);
+                        arvore.inserir(tmp);
                         encontrado = true;
                     } else {
-                        linha = br.readLine(); // só continua lendo se ainda não encontrou
+                        linha = br.readLine();
                     }
                 }
 
                 if (!encontrado) {
                     System.out.println("Show ID " + entrada + " não encontrado.");
                 }
-
                 br.close();
             }
         } catch (IOException e) {
             System.out.println("Erro ao acessar o arquivo: " + e.getMessage());
         }
 
-        
         String titulo = sc.nextLine();
-        while(!titulo.equals("FIM"))
-        {
-            if(hash.pesquisar(titulo) == true)
-            {
+        while (!titulo.equals("FIM")) {
+            if (arvore.pesquisar(titulo)) {
                 System.out.println(" SIM");
-            }
-            else{
+            } else {
                 System.out.println(" NAO");
             }
             titulo = sc.nextLine();
@@ -427,10 +445,9 @@ public class Main {
         long tempoFinal = System.currentTimeMillis();
         long tempoExecucao = tempoFinal - tempoInicial;
 
-        //Criando arquivo.txt
         try {
-            java.io.PrintWriter arquivo = new java.io.PrintWriter("matricula_hashRehash.txt", "UTF-8");
-            arquivo.printf("858950\t%d\t%d \n", tempoExecucao, hash.getComparacoes());
+            PrintWriter arquivo = new PrintWriter("matricula_avl.txt", "UTF-8");
+            arquivo.printf("844448\t%d\t%d\n", tempoExecucao, arvore.getComparacoes());
             arquivo.close();
         } catch (Exception e) {
             e.printStackTrace();
